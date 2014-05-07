@@ -26,6 +26,15 @@ class CustomPostType
     }
 
     /* getteurs et setteurs */
+    /**
+     * Set le tableau de configuration.
+     * 
+     * La configuration definit la personalisation du custom post type 
+     *
+     * @param mixed[] $config tableau associatif
+     *
+     * @return none
+     */
     public function setConfig( $config )
     {
         $ok = false;
@@ -45,6 +54,13 @@ class CustomPostType
         {
             $this->post_type = PREFIX_PLUGIN . $nom . '_cpt';
         }
+    }
+
+    public function post_type_existe( $nom )
+    {
+        $post_types = get_post_types( '', 'names' ); 
+
+        return in_array( PREFIX_PLUGIN . $nom . '_cpt', $post_types );
     }
 
     public function getConfig( $nom )
@@ -68,10 +84,15 @@ class CustomPostType
                 $ok = 'post';
                 break;
             case 'nom':
-                $ok = 'test';//TODO si 2 x test ??? => get_post_types() si present 
+                $ok = 'test';
+                // aucun cpt n'aurat le mm nom -> post_type
+                if( $this->post_type_existe( $ok ) ) 
+                {
+                    $ok = str_shuffle( $ok ) . rand( 0, 100 );
+                }
                 break;
             case 'slug':
-                $ok = $this->getConfig( 'nom' );// . 's';
+                $ok = $this->getConfig( 'nom' );
                 break;
             case 'show_in_menu':
                 $ok = true;

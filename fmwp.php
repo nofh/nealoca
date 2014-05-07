@@ -23,28 +23,29 @@
 /*----------------------------------------------------------------------------*
  * COMMON 
  *----------------------------------------------------------------------------*/
-require_once plugin_dir_path(__FILE__) . 'config.php';
-require_once plugin_dir_path(__FILE__) . 'includes/CustomPostType.php';
-require_once plugin_dir_path(__FILE__) . 'includes/TestCPT.php'; 
+require_once plugin_dir_path( __FILE__ ) . 'config.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/CustomPostType.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/TestCPT.php'; 
 
 /*----------------------------------------------------------------------------*
  * FRONT
  *----------------------------------------------------------------------------*/
-require_once plugin_dir_path(__FILE__) . 'public/FmWpFront.php';
-require_once plugin_dir_path(__FILE__) . 'public/includes/ShortCode.php';
-require_once plugin_dir_path(__FILE__) . 'public/includes/TestSHC.php';
+require_once plugin_dir_path( __FILE__ ) . 'public/FmWpFront.php';
+require_once plugin_dir_path( __FILE__ ) . 'public/includes/ShortCode.php';
+require_once plugin_dir_path( __FILE__ ) . 'public/includes/TestSHC.php';
 
 
 // activation et desactivation
-register_activation_hook(__FILE__, array('OrganismeFront', 'activate'));
-register_deactivation_hook(__FILE__, array('OrganismeFront', 'deactivate'));
+register_activation_hook( __FILE__, array( 'OrganismeFront', 'activate' ) );
+register_deactivation_hook (__FILE__, array( 'OrganismeFront', 'deactivate' ) );
 
 // instancie le front
-add_action('plugins_loaded', array('OrganismeFront', 'get_instance'));
+add_action( 'plugins_loaded', array( 'OrganismeFront', 'get_instance' ) );
 /*----------------------------------------------------------------------------*
  * ADMIN
  *----------------------------------------------------------------------------*/
-if (is_admin()) {
-	include_once plugin_dir_path(__FILE__) . 'admin/FmWpAdmin.php';
-	add_action('plugins_loaded', array('OrganismeAdmin', 'get_instance'));
+if( is_admin() ) 
+{
+	include_once plugin_dir_path( __FILE__ ) . 'admin/FmWpAdmin.php';
+	add_action( 'plugins_loaded', array( 'OrganismeAdmin', 'get_instance' ) );
 }
