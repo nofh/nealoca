@@ -26,6 +26,8 @@
 require_once plugin_dir_path( __FILE__ ) . 'config.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/CustomPostType.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/TestCPT.php'; 
+require_once plugin_dir_path( __FILE__ ) . 'includes/Taxonomie.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/TestTAXO.php'; 
 
 /*----------------------------------------------------------------------------*
  * FRONT

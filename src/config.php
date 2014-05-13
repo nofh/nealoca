@@ -15,6 +15,9 @@ define(PLUGIN_SLUG, 'fmwp');
 define(PREFIX_PLUGIN, 'fw_'); // TODO readapation voir creation cpt pour le nom 
 define(PREFIX_META, '_fw_'); // TODO passer de _ec vers og
 
+// Taxonomie
+define( TAXO_TEST, 'TestTaxo');
+
 // traduction
 define(TEXT_DOMAIN, 'fmwp_langue');
 

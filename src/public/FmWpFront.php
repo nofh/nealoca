@@ -37,10 +37,16 @@ class OrganismeFront
 		// css et js
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        // taxo
+        $tags = new TestTAXO();
 
         // custom post type 
         $test_cpt = new TestCPT( 'un' );
         $test_cpt = new TestCPT( 'deux' );
+
+	// associer la taxo au cpt
+        register_taxonomy_for_object_type( TAXO_TEST, Utils::get_type_cpt( 'un' ) ); 
+
 
         // shortcode
         $test_shc = new TestSHC();
