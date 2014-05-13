@@ -23,18 +23,18 @@
 /*----------------------------------------------------------------------------*
  * COMMON 
  *----------------------------------------------------------------------------*/
-require_once plugin_dir_path( __FILE__ ) . 'config.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/CustomPostType.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/TestCPT.php'; 
-require_once plugin_dir_path( __FILE__ ) . 'includes/Taxonomie.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/TestTAXO.php'; 
+require_once plugin_dir_path( __FILE__ ) . 'src/config.php';
+require_once plugin_dir_path( __FILE__ ) . 'src/includes/CustomPostType.php';
+require_once plugin_dir_path( __FILE__ ) . 'src/includes/TestCPT.php'; 
+require_once plugin_dir_path( __FILE__ ) . 'src/includes/Taxonomie.php';
+require_once plugin_dir_path( __FILE__ ) . 'src/includes/TestTAXO.php'; 
 
 /*----------------------------------------------------------------------------*
  * FRONT
  *----------------------------------------------------------------------------*/
-require_once plugin_dir_path( __FILE__ ) . 'public/FmWpFront.php';
-require_once plugin_dir_path( __FILE__ ) . 'public/includes/ShortCode.php';
-require_once plugin_dir_path( __FILE__ ) . 'public/includes/TestSHC.php';
+require_once plugin_dir_path( __FILE__ ) . 'src/public/FmWpFront.php';
+require_once plugin_dir_path( __FILE__ ) . 'src/public/includes/ShortCode.php';
+require_once plugin_dir_path( __FILE__ ) . 'src/public/includes/TestSHC.php';
 
 
 // activation et desactivation
@@ -48,6 +48,6 @@ add_action( 'plugins_loaded', array( 'OrganismeFront', 'get_instance' ) );
  *----------------------------------------------------------------------------*/
 if( is_admin() ) 
 {
-	include_once plugin_dir_path( __FILE__ ) . 'admin/FmWpAdmin.php';
+	include_once plugin_dir_path( __FILE__ ) . 'src/admin/FmWpAdmin.php';
 	add_action( 'plugins_loaded', array( 'OrganismeAdmin', 'get_instance' ) );
 }
