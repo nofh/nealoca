@@ -1,5 +1,5 @@
 <?php
-class OrganismeAdmin 
+class FmWpAdmin 
 {
 	private $plugin_slug = PLUGIN_SLUG;
 	protected static $instance = null;
@@ -32,6 +32,7 @@ class OrganismeAdmin
 
 	public function enqueue_admin_scripts() 
 	{
+		wp_enqueue_style( 'js-admin-styles', plugins_url( 'assets/css/admin.js', __FILE__ ), array(), VERSION );
     }
 
     // creation menu

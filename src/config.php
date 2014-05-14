@@ -23,17 +23,18 @@ define(TEXT_DOMAIN, 'fmwp_langue');
 
 // emplacement
 define('EMP_PLUGIN', plugin_dir_path(__FILE__));
-define('EMP_ADMIN_VIEWS', plugin_dir_path(__FILE__) . 'admin/views/');
-define('EMP_PUBLIC_VIEWS', plugin_dir_path(__FILE__) . 'public/views/');
+define('EMP_COMMUN_VIEWS', plugin_dir_path(__FILE__) . 'src/commun/views/');
+define('EMP_PUBLIC_VIEWS', plugin_dir_path(__FILE__) . 'src/public/views/');
+define('EMP_ADMIN_VIEWS', plugin_dir_path(__FILE__) . 'src/admin/views/');
 
 // Img  
-define('URL_PLUGIN', plugins_url() . '/fmwp/');
-define('EMP_IMG', URL_PLUGIN . 'assets/img/');
-define('EMP_IMG_PUBLIC', URL_PLUGIN . 'public/assets/img/');
-define('EMP_IMG_ADMIN', URL_PLUGIN . 'admin/assets/img/');
+define('URL_PLUGIN', plugins_url() . '/fmwp/'); // FIXME
+define('EMP_IMG_PUBLIC', URL_PLUGIN . 'src/commun/assets/img/');
+define('EMP_IMG_PUBLIC', URL_PLUGIN . 'src/public/assets/img/');
+define('EMP_IMG_ADMIN', URL_PLUGIN . 'src/admin/assets/img/');
 
 // vendors
-define('EMP_VENDORS', URL_PLUGIN . 'assets/vendors/');
+define('EMP_VENDORS', URL_PLUGIN . 'src/commun/assets/vendors/');
 
 // global
 

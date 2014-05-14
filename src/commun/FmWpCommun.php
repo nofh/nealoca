@@ -22,7 +22,7 @@
  * @author  Your Name <email@example.com>
  */
 
-class OrganismeFront
+class FmWpCommun
 {
 	private $plugin_slug = PLUGIN_SLUG;
 	private static $instance = null;
@@ -35,8 +35,12 @@ class OrganismeFront
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 		// css et js
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_commun_styles' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_commun_styles' ) );
+
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_commun_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_commun_scripts' ) );
+
         // taxo
         $tags = new TestTAXO();
 
@@ -44,8 +48,8 @@ class OrganismeFront
         $test_cpt = new TestCPT( 'un' );
         $test_cpt = new TestCPT( 'deux' );
 
-	// associer la taxo au cpt
-        register_taxonomy_for_object_type( TAXO_TEST, Utils::get_type_cpt( 'un' ) ); 
+        // associer la taxo au cpt
+        register_taxonomy_for_object_type( TAXO_TEST, Utils::get_nom_cpt( 'un' ) ); 
 
 
         // shortcode
@@ -91,15 +95,16 @@ class OrganismeFront
 		load_plugin_textdomain( $domain, FALSE, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
 	}
 
-	public function enqueue_styles() 
+	public function enqueue_commun_styles() 
 	{
-		wp_enqueue_style( 'css-public-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), VERSION );
+		wp_enqueue_style( 'css-commun-styles', plugins_url( 'assets/css/commun.css', __FILE__ ), array(), VERSION );
 	}
 
-	public function enqueue_scripts() 
+	public function enqueue_commun_scripts() 
 	{
         // registre
 
         // localize
 	}
 }
+

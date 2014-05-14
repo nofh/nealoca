@@ -1,7 +1,7 @@
 <?php
 class Utils
 {
-     static final $debug = true;
+     private static $_debug = true;
     /**
      * Retourne le nom complet du cpt
      *
@@ -19,7 +19,7 @@ class Utils
 
         public static function debug( $data )
 	{
-		if( $this->debug )
+		if( $this->_debug )
 		{
   			 if( is_array( $data ) || is_object( $data ) )
 			{
