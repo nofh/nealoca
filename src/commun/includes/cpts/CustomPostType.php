@@ -49,10 +49,10 @@ class CustomPostType
 
     public function setPostType()
     {
-        $nom = $this->getConfig( 'nom' );
-        if( $nom )
+        $slug = $this->getConfig( 'slug' );
+        if( $slug )
         {
-            $this->post_type = PREFIX_PLUGIN . $nom . '_cpt';
+            $this->post_type = PREFIX_PLUGIN . $slug . '_cpt';
         }
     }
 
@@ -67,7 +67,7 @@ class CustomPostType
     {
         $ok = false;
         // verifier si existe
-        if (array_key_exists( $nom, $this->_config ) ) 
+        if( array_key_exists( $nom, $this->_config ) ) 
         {
             $tmp = $this->_config[$nom];
             if( isset( $tmp ) && ! empty( $tmp ) )
@@ -92,10 +92,13 @@ class CustomPostType
                 }
                 break;
             case 'slug':
-                $ok = $this->getConfig( 'nom' );
+                $ok = strtolower( $this->getConfig( 'nom' ) );
                 break;
             case 'show_in_menu':
                 $ok = true;
+                break;
+            case 'show_in_nav_menus':
+                $ok = false;
                 break;
             case 'menu_position':
                 $ok = ( $this->getConfig( 'show_in_menu' ) === true ) ? 100 : null;
@@ -105,6 +108,7 @@ class CustomPostType
                 break;
             case 'class_render':
                 $ok = ucfirst( $this->getConfig( 'nom' ) ) . 'RENDER';
+                break;
             default:
                 $ok = false;
             }
@@ -147,8 +151,9 @@ class CustomPostType
             'publicly_queryable' => true,
             'show_ui'            => true,
             'show_in_menu'       => $this->getConfig( 'show_in_menu' ),
+            'show_in_nav_menus'  => $this->getConfig( 'show_in_nav_menus' ),           
             'query_var'          => true,
-            'rewrite'            => array( 'slug' => $slug ),
+            'rewrite'            => array( 'slug' => $slug . 's' ),
             'capability_type'    => 'post',
             'has_archive'        => true,
             'hierarchical'       => false,
@@ -156,7 +161,7 @@ class CustomPostType
             'supports'           => array( 'title' )
         );
  
-        register_post_type( $this->post_type , $args ); 
+        register_post_type( $this->post_type,  $args ); 
     }
 
     /**
@@ -215,16 +220,30 @@ class CustomPostType
     }
 
     /**
+     * Ajout le cpt ds la boucle standard de wp.
      *
-     * Ajout de cpt ds la loop de wp
+     * Appel une callaback par defaut d'ajout ds la boucle.
+     * ou une callaback personel donnees en argument.
      *
+     * @params string $callback le fct/meth devant etre utiliser pour l'ajout ds la boucle
+     *
+     * @return none
      */
      public function ajouter_cpt_loop( $callback=null ) // permet d'etre redef par l'enfant
      {
-        $callback = ( ! empty( $callback ) ) ? $callback : 'ajouter_cpt_loop_callback';
-      add_filter( 'pre_get_posts', array( $this, $callback ) );
-    }
+         $callback = ( ! empty( $callback ) ) ? $callback : 'ajouter_cpt_loop_callback';
+         add_filter( 'pre_get_posts', array( $this, $callback ) );
+     }
 
+    /**
+     * Callback par defaut d'ajout ds la loop de wp.
+     *
+     * Modifie la query wordpresss pour integrer le cpt.
+     *
+     * @params mixed[] $query query fournit pas wp lors de l'appel de la callback
+     *
+     * @return mixed[] la query modifier 
+     */
     public function ajouter_cpt_loop_callback( $query )// ajout le cpt ds la loop des single.php // TODO trop specifique
     {
         if ( is_single( )  && $query->is_main_query()  )
@@ -257,8 +276,118 @@ class CustomPostType
 
         return $query;
     }
+    /**
+     * Callaback d'interdiction de creation d'un nouveau cpt
+     *
+     * Est appeler par une autres methodes elle mm appeler par un enfant.
+     *
+     * @return none
+     */
+    public function disable_new_post_callback()
+    {
+        if( get_current_screen()->post_type == $this->post_type )
+            wp_die( "You ain't allowed to do that!" );
+    }
 
+    /**
+     * Empeche la création de cpt organisme.
+     *
+     * Les customes post type organisme ne sont pas creer ds wp.
+     * wp se charge de les afficher mais ne creer pas, il utilise les infos fournit pas le webservice 
+     *
+     * @see Import
+     *
+     * @return none
+     */
+    public function desactiver_nouveau_cpt() // FIXME fwmp: callback? -> non callback
+    {
+        add_action( 'load-post-new.php', array( $this, 'disable_new_post_callback' ) );
+    }
 
-    
+        /**
+     * Modifie l'affichage admin de la liste des cpts organisme.
+     *
+     * Ajout des colonnes a la liste d'affichage.
+     *
+     * @return none 
+     */
+    public function modifier_affichage_liste_admin()
+    {
+        add_filter( 'manage_' . $this->post_type . '_posts_columns', array( $this, 'modifier_affichage_liste_admin_callback' ) );
+
+        add_action( 'manage_posts_custom_column', array( $this, 'remplire_colonne_liste_admin_callback' ), 10, 2 );
+    }
+
+    /**
+     * Callback pour l'ajout de colonnes.
+     *
+     * Détermine le nom et le slug des colonnes a ajouter
+     *
+     * @param mixed[] $colonne array des colonnes existantes 
+     *
+     * @return $colonnes tableau des colonnes existantes plus celles ajouter
+     */
+    public function modifier_affichage_liste_admin_callback( $colonne, $ajouts ) 
+    {
+        return array_merge( $colonne, array( 'localite' => 'Localité', 'nomcontact' => 'Nom Contact', 'prenomcontact' => 'Prenom Contact' ) );
+    }
+
+    /**
+     * Ajoute les valeurs a la colonne.
+     *
+     * les args sont remplit par wp lors de l'appel de la callback
+     *
+     * @param mixed[]    $colonne array des clonnes existantes
+     * @param string|int $post_id id du post dont on veut utiliser une des valeurs pour l'afficher ds la colonne 
+     *
+     * @return none
+     */
+    public function remplire_colonne_liste_admin_callback( $colonne, $post_id )
+    {
+        if( $colonne == 'localite' )
+        {
+            $valeur = get_post_meta( $post_id, PREFIX_META . 'adresse_organisme', true );
+            $elements = explode( ';', $valeur );
+            $valeur = ( ! empty( $elements[4] ) ) ? $elements[4] : ' - '; 
+        }
+        else if( $colonne == 'nomcontact' )
+        {
+            $valeur = get_post_meta( $post_id, PREFIX_META . 'nom_contact', true );
+        }
+        else if( $colonne == 'prenomcontact' )
+        {
+            $valeur = get_post_meta( $post_id, PREFIX_META . 'prenom_contact', true );
+        }
+    }
+
+    public function rediriger_template_cpt()
+    {
+        add_filter( 'single_template', array( $this, 'rediriger_template_cpt_callback' ) );
+    }
+
+    public function rediriger_template_cpt_callback( $single_template )
+    {
+        global $post;
+
+        $nom_cpt = $this->getConfig( 'slug' );
+        if( $post->post_type == $this->post_type ) // eviter la redirection des pages ou post
+        {
+            if( $theme_file = locate_template( array( 'content-' . $nom_cpt . '.php'  ) ) ) 
+            {
+                $theme_file = locate_template( array( 'single.php' ) );
+                if( $theme_file )
+                {
+                    $single_template = $theme_file; //template theme
+                }
+            }
+            else 
+            {
+                $template_file = 'single-' . $nom_cpt . '.php';
+                $single_template = EMP_PUBLIC_VIEWS . $template_file; //template plugin
+            }
+        }
+
+        return $single_template;
+    }
 }
 ?>

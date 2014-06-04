@@ -41,19 +41,13 @@ class FmWpCommun
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_commun_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_commun_scripts' ) );
 
-        // taxo
-        $tags = new TestTAXO();
-
         // custom post type 
-        $test_cpt = new TestCPT( 'un' );
-        $test_cpt = new TestCPT( 'deux' );
-
-        // associer la taxo au cpt
-        register_taxonomy_for_object_type( TAXO_TEST, Utils::get_nom_cpt( 'un' ) ); 
-
-
-        // shortcode
-        $test_shc = new TestSHC();
+        $accueil = new AccueilCPT();
+        $localisation = new LocalisationCPT();
+        $appartement = new AppartementCPT();
+        $activite = new ActiviteCPT();
+        //$contact = new ContactCPT();
+      // $posteur = new NealocaPST();
 	}
  
     public static function get_instance() 
@@ -70,8 +64,9 @@ class FmWpCommun
 
 	public static function activate( $network_wide ) 
     {
-        flush_rewrite_rules();
-        
+       $posteur = new NealocaPST();
+
+        flush_rewrite_rules();//permlink activer sans refresh
 	}
 
 	public static function deactivate( $network_wide ) 

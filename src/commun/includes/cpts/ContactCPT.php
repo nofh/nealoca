@@ -1,9 +1,9 @@
 <?php
-class TestCPT extends CustomPostType
+class ContactCPT extends CustomPostType
 {
-    public function __construct( $nom)
+    public function __construct()
     {
-        $config = array( 'nom' => $nom, 'menu_position' => null, 'show_in_menu' => 'fmwp_menu' );
+        $config = array( 'nom' => 'Contact', 'menu_position' => null, 'show_in_menu' => 'fmwp_menu' );
         parent::__construct( $config );
 
         $this->setSupport( 'editor' );

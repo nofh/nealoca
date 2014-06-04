@@ -12,24 +12,29 @@ class Utils
      *
      * @return string le nom complet du cpt ( ex: og_organisme_cpt )
      */
-	public static function get_nom_cpt( $nom )
-	{
-        	return PREFIX_PLUGIN . $nom . '_cpt';
-	}
+     public static function get_slug_cpt( $nom )
+     {
+         return PREFIX_PLUGIN . $nom . '_cpt';
+     }
 
-        public static function debug( $data )
-	{
-		if( $this->_debug )
-		{
-  			 if( is_array( $data ) || is_object( $data ) )
-			{
-				echo("<script>console.log('PHP: ".json_encode( $data )."');</script>");
-			} 
-			else 
-			{
-				echo("<script>console.log('PHP: ".$data."');</script>");
-			}
-		}
-	}
+     public static function get_slug_taxo( $nom )
+     {
+         return strtolower( $nom );
+     }
+
+     public static function debug( $data )
+     {
+         if( self::$_debug )
+         {
+             if( is_array( $data ) || is_object( $data ) )
+             {
+                 echo("<script>console.log('PHP: ".json_encode( $data )."');</script>");
+             } 
+             else 
+             {
+                 echo("<script>console.log('PHP: ".$data."');</script>");
+             }
+         }
+     }
 }
 ?>

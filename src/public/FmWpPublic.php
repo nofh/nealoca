@@ -35,7 +35,7 @@ class FmWpPublic
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
         // shortcode
-        $test_shc = new TestSHC();
+       // $test_shc = new TestSHC();
 	}
  
     public static function get_instance() 
