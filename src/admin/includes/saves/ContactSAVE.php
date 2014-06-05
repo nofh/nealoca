@@ -1,5 +1,5 @@
 <?php 
-class ActiviteSAVE extends CustomPostTypeSave
+class ContactSAVE extends CustomPostTypeSave
 {
     public function __construct()
     {

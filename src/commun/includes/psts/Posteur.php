@@ -22,29 +22,21 @@ class Posteur
         $this->_creation_du_menu( $config );
     }
 
-    public function recuperer_pages()
+    // supprimer
+    public function supprimer_post( $config )
     {
-        $args = array(
-            'sort_order' => 'ASC',
-            'sort_column' => 'post_title',
-            'hierarchical' => 1,
-            'exclude' => '',
-            'include' => '',
-            'meta_key' => '',
-            'meta_value' => '',
-            'authors' => '',
-            'child_of' => 0,
-            'parent' => -1,
-            'exclude_tree' => '',
-            'number' => '',
-            'offset' => 0,
-            'post_type' => 'page',
-            'post_status' => 'publish'
-        ); 
-        $pages = get_pages($args);
+        $this->_suppression_du_post( $config );
+    }
 
+    public function supprimer_page( $config )
+    {
+        $this->_suppression_du_post( $config );
+    }
 
-        return $pages;
+    public function supprimer_menu( $config )
+    {
+        //add_filter( 'wp_nav_menu_args', array( $this, '_suppression_du_menu_callback' ) );
+        $this->_suppression_du_menu( $config );
     }
 
     // --
@@ -178,13 +170,14 @@ class Posteur
                         'menu-item-status' => 'publish'
                     ) );
             }
-            // active le menu ds le theme
-            if( ! has_nav_menu( $this->_get_menu_option_config( $config, 'localisation_menu' ) ) )
-            {
-                $locations = get_theme_mod('nav_menu_locations');
-                $locations[$this->_get_menu_option_config( $config, 'localisation_menu' )] = $menu_id;
-                set_theme_mod( 'nav_menu_locations', $locations );
-            }
+        }
+
+        // active le menu ds le theme
+        if( ! has_nav_menu( $this->_get_menu_option_config( $config, 'localisation_menu' ) ) )
+        {
+            $locations = get_theme_mod('nav_menu_locations');
+            $locations[$this->_get_menu_option_config( $config, 'localisation_menu' )] = $menu_id;
+            set_theme_mod( 'nav_menu_locations', $locations );
         }
     }
 
@@ -230,6 +223,29 @@ class Posteur
 
 
         return $ok;
+    }
+
+    // suppression
+    private function _suppression_du_post( $config )
+    {
+        $post = get_page_by_title( $this->_get_menu_option_config( $config, 'post_title' ) );
+        if( is_object( $post ) )
+        {
+            wp_delete_post( $post->ID );
+        }
+    }
+
+    public function _suppression_du_menu( $config )
+    {
+        $db = Db::get_instance();
+        $db->supprimer_menu( $this->_get_menu_option_config( $config, 'menu_name' ) );
+        /*
+        // TODO DELETE EN HARD 
+        $locations = get_theme_mod('nav_menu_locations');
+        $locations[$this->_get_menu_option_config( $config, 'localisation_menu' )] = '';
+        set_theme_mod( 'nav_menu_locations', $locations );
+         */
+        //wp_delete_term( , 'category' ) 
     }
 }
 ?>

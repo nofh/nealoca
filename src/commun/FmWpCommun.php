@@ -46,8 +46,8 @@ class FmWpCommun
         $localisation = new LocalisationCPT();
         $appartement = new AppartementCPT();
         $activite = new ActiviteCPT();
-        //$contact = new ContactCPT();
-      // $posteur = new NealocaPST();
+        $contact = new ContactCPT();
+    //$posteur = new NealocaPST( 'creation' );
 	}
  
     public static function get_instance() 
@@ -62,16 +62,18 @@ class FmWpCommun
 		return self::$instance;
 	}
 
-	public static function activate( $network_wide ) 
+	public static function activate( $network_wide ) // no output !!
     {
-       $posteur = new NealocaPST();
+       $posteur = new NealocaPST( 'creation' );
 
         flush_rewrite_rules();//permlink activer sans refresh
 	}
 
 	public static function deactivate( $network_wide ) 
 	{
-        flush_rewrite_rules();
+       $posteur = new NealocaPST( 'suppression' );
+
+        flush_rewrite_rules();// util??
 	}
 
 	//
