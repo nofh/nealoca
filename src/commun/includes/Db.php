@@ -24,9 +24,17 @@ class Db
     public function supprimer_menu( $nom )
     {
         $this->_db->delete( $this->_db->terms, array( 'name' => $nom ), array( '%s' ) );
-
-        //$this->_db->delete( 'nl_terms', array( 'name' => $nom ) );
     }
 
+    public function supprimer_element_menu( $nom )
+    {
+        $this->_db->delete( $this->_db->posts, array( 'post_title' => $nom , 'post_type' => 'nav_menu_item' ), array( '%s' ) );
+        $this->debug();
+    }
+
+    public function debug()
+    {
+        var_dump( $this->_db->last_query );
+    }
   }
 ?>

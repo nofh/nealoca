@@ -22,6 +22,10 @@ class Posteur
         $this->_creation_du_menu( $config );
     }
 
+    public function activer_theme( $nom )
+    {
+        switch_theme( strtolower( $nom ) );
+    }
     // supprimer
     public function supprimer_post( $config )
     {
@@ -215,6 +219,9 @@ class Posteur
             case 'post_status':
                 $ok = 'publish';
                 break;
+            case 'elements_menu':
+                $ok = array();
+                break;
             }
         }
 
@@ -225,10 +232,11 @@ class Posteur
     // suppression
     private function _suppression_du_post( $config )
     {
-        $post = get_page_by_title( $this->_get_menu_option_config( $config, 'post_title' ) );
+        $this->_get_post_option_config( $config, 'post_title' );
+        $post = get_page_by_title( $this->_get_post_option_config( $config, 'post_title' ) );
         if( is_object( $post ) )
         {
-            wp_delete_post( $post->ID );
+            wp_delete_post( $post->ID, true );
         }
     }
 
@@ -236,6 +244,11 @@ class Posteur
     {
         $db = Db::get_instance();
         $db->supprimer_menu( $this->_get_menu_option_config( $config, 'menu_name' ) );
+
+        foreach( $this->_get_menu_option_config( $config, 'elements_menu' ) as $element_menu )
+        {
+            $db->supprimer_element_menu( $element_menu );
+        }
     }
 }
 ?>

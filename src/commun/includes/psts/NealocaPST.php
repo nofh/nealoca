@@ -30,6 +30,9 @@ class NealocaPST extends Posteur
         $elements_menu = array( 'Localisation', 'Appartements', 'Activités', 'Contact'  );
         $config_menu = array( 'menu_name' => 'nealoca_menu', 'localisation_menu' => 'top-bar-r', 'elements_menu' => $elements_menu );
         $this->creer_menu( $config_menu );
+
+        $this->activer_theme( 'NeaLoca' );
+
     }
 
     public function _suppression()
@@ -46,7 +49,8 @@ class NealocaPST extends Posteur
         $config_post_contact = array( 'post_title' => 'Contact' );
         $this->supprimer_page( $config_post_contact );
 
-        $config_menu = array( 'menu_name' => 'nealoca_menu' );
+        $elements_menu = array( 'Localisation', 'Appartements', 'Activités', 'Contact' );
+        $config_menu = array( 'menu_name' => 'nealoca_menu', 'elements_menu' => $elements_menu );
         $this->supprimer_menu( $config_menu );
     }
 }

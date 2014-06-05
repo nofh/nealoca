@@ -1,1 +1,3 @@
-<h1> ACCUEIL PLUGIN&</h1>
+<?php 
+echo "SINGLE ACCUEIL PLUGIN";
+?>

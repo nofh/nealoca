@@ -365,29 +365,27 @@ class CustomPostType
         add_filter( 'single_template', array( $this, 'rediriger_template_cpt_callback' ) );
     }
 
-    public function rediriger_template_cpt_callback( $single_template )
+    public function rediriger_template_cpt_callback( $template_a_utiliser ) 
     {
         global $post;
-
-        $nom_cpt = $this->getConfig( 'slug' );
+        print_r( $post );
         if( $post->post_type == $this->post_type ) // eviter la redirection des pages ou post
         {
-            if( $theme_file = locate_template( array( 'content-' . $nom_cpt . '.php'  ) ) ) 
+            $nom_template = 'single-' . $this->getConfig( 'slug' ) . '.php';
+            $template_theme = locate_template( array( $nom_template ) );
+            if( $template_theme ) 
             {
-                $theme_file = locate_template( array( 'single.php' ) );
-                if( $theme_file )
-                {
-                    $single_template = $theme_file; //template theme
-                }
+                echo " template theme";
+                $template_a_utiliser = $template_theme; 
             }
             else 
             {
-                $template_file = 'single-' . $nom_cpt . '.php';
-                $single_template = EMP_PUBLIC_VIEWS . $template_file; //template plugin
+                echo " template plugin";
+                $template_a_utiliser = EMP_PUBLIC_VIEWS . $nom_template; //template plugin
             }
         }
 
-        return $single_template;
+        return $template_a_utiliser;
     }
 }
 ?>
