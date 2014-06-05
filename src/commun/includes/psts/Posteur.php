@@ -173,12 +173,9 @@ class Posteur
         }
 
         // active le menu ds le theme
-        if( ! has_nav_menu( $this->_get_menu_option_config( $config, 'localisation_menu' ) ) )
-        {
             $locations = get_theme_mod('nav_menu_locations');
             $locations[$this->_get_menu_option_config( $config, 'localisation_menu' )] = $menu_id;
             set_theme_mod( 'nav_menu_locations', $locations );
-        }
     }
 
     private function _get_menu_option_config( $config, $nom )
@@ -239,13 +236,6 @@ class Posteur
     {
         $db = Db::get_instance();
         $db->supprimer_menu( $this->_get_menu_option_config( $config, 'menu_name' ) );
-        /*
-        // TODO DELETE EN HARD 
-        $locations = get_theme_mod('nav_menu_locations');
-        $locations[$this->_get_menu_option_config( $config, 'localisation_menu' )] = '';
-        set_theme_mod( 'nav_menu_locations', $locations );
-         */
-        //wp_delete_term( , 'category' ) 
     }
 }
 ?>
