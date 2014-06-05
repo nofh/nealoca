@@ -64,16 +64,26 @@ class FmWpCommun
 
 	public static function activate( $network_wide ) // no output !!
     {
-       $posteur = new NealocaPST( 'creation' );
+        // buffeurisation
+        ob_start();
+
+        $posteur = new NealocaPST( 'creation' );
 
         flush_rewrite_rules();//permlink activer sans refresh
+
+        // fin buffeurisation --> pas d'output possible 
+        ob_end_clean();
 	}
 
 	public static function deactivate( $network_wide ) 
 	{
-       $posteur = new NealocaPST( 'suppression' );
+        ob_start();
+        $posteur = new NealocaPST( 'suppression' );
 
         flush_rewrite_rules();// util??
+
+        // fin buffeurisation --> pas d'output possible 
+        ob_end_clean();
 	}
 
 	//
