@@ -173,9 +173,9 @@ class Posteur
         }
 
         // active le menu ds le theme
-            $locations = get_theme_mod('nav_menu_locations');
-            $locations[$this->_get_menu_option_config( $config, 'localisation_menu' )] = $menu_id;
-            set_theme_mod( 'nav_menu_locations', $locations );
+        $locations = get_theme_mod('nav_menu_locations');
+        $locations[$this->_get_menu_option_config( $config, 'localisation_menu' )] = $menu_id;
+        set_theme_mod( 'nav_menu_locations', $locations );
     }
 
     private function _get_menu_option_config( $config, $nom )
