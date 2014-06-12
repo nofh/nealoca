@@ -15,24 +15,31 @@ class NealocaPST extends Posteur
 
     public function _creation()
     {
-        $config_post_localisation = array( 'post_title' => 'Localisation', 'page_template' => 'hero.php' );
+        // choix du theme
+        $this->activer_theme( 'NeaLoca' );
+
+        // creation des pages et association avec un template
+        $config_post_accueil = array( 'post_title' => 'Accueil', 'page_template' => 'accueil.php' );
+        $this->creer_page( $config_post_accueil );
+
+        $config_post_localisation = array( 'post_title' => 'Localisation', 'page_template' => 'localisation.php' );
         $this->creer_page( $config_post_localisation );
 
-        $config_post_appartment = array( 'post_title' => 'Appartements', 'page_template' => 'hero.php' );
+        $config_post_appartment = array( 'post_title' => 'Appartements', 'page_template' => 'appartements.php' );
         $this->creer_page( $config_post_appartment );
 
-        $config_post_activite = array( 'post_title' => 'Activités', 'page_template' => 'hero.php' );
+        $config_post_activite = array( 'post_title' => 'Activités', 'page_template' => 'activites.php' );
         $this->creer_page( $config_post_activite );
 
-        $config_post_contact = array( 'post_title' => 'Contact', 'page_template' => 'hero.php' );
+        $config_post_contact = array( 'post_title' => 'Contact', 'page_template' => 'contact.php' );
         $this->creer_page( $config_post_contact );
 
         $elements_menu = array( 'Localisation', 'Appartements', 'Activités', 'Contact'  );
         $config_menu = array( 'menu_name' => 'nealoca_menu', 'localisation_menu' => 'top-bar-r', 'elements_menu' => $elements_menu );
         $this->creer_menu( $config_menu );
 
-        $this->activer_theme( 'NeaLoca' );
-
+        // choix d'un frong page
+        $this->activer_front_page( 'Accueil' );
     }
 
     public function _suppression()

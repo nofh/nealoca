@@ -26,6 +26,18 @@ class Posteur
     {
         switch_theme( strtolower( $nom ) );
     }
+
+    public function activer_front_page( $nom )
+    {
+        $homepage = get_page_by_title( $nom );
+
+        if ( $homepage )
+        {
+            update_option( 'page_on_front', $homepage->ID );
+            update_option( 'show_on_front', 'page' );
+        }
+    }
+
     // supprimer
     public function supprimer_post( $config )
     {

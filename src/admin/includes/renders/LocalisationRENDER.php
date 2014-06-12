@@ -17,10 +17,9 @@ class LocalisationRENDER
         $post_types = array( $this->post_type ); // limiter la creation des meta box au cpt organisme
         if ( in_array( $post_type, $post_types )) 
         {
-            add_meta_box( 'emplacement', 'Emplacement', array( $this, 'emplacement_render' ), $post_type, 'advanced', 'default' );                
             add_meta_box( 'acces', 'Acces', array( $this, 'acces_render' ), $post_type, 'advanced', 'default' );                
             add_meta_box( 'region', 'Région', array( $this, 'region_render' ), $post_type, 'advanced', 'default' );                
-            add_meta_box( 'proche_de', 'Proche De', array( $this, 'proche_de_render' ), $post_type, 'advanced', 'default' );                
+            add_meta_box( 'villages', 'Villages', array( $this, 'villages_render' ), $post_type, 'advanced', 'default' );                
             add_meta_box( 'centres_interets', 'Centres Interets', array( $this, 'centres_interets_render' ), $post_type, 'advanced', 'default' );                
         }
     }
@@ -52,13 +51,13 @@ class LocalisationRENDER
         wp_editor( $content, 'valeur_region', $settings );
     }
 
-    public function proche_de_render( $post )
+    public function villages_render( $post )
     {
-        wp_nonce_field( 'proche_de_box', 'proche_de_nonce' );
-        $content = get_post_meta( $post->ID, PREFIX_META . 'proche_de', true );
+        wp_nonce_field( 'villages_box', 'villages_nonce' );
+        $content = get_post_meta( $post->ID, PREFIX_META . 'villages', true );
 
         $settings = array( 'media_buttons' => false, 'textarea_rows' => 5 );
-        wp_editor( $content, 'valeur_proche_de', $settings );
+        wp_editor( $content, 'valeur_villages', $settings );
     }
 
     public function centres_interets_render( $post )

@@ -246,7 +246,7 @@ class CustomPostType
      */
     public function ajouter_cpt_loop_callback( $query )// ajout le cpt ds la loop des single.php // TODO trop specifique
     {
-        if ( is_single( )  && $query->is_main_query()  )
+        if ( ( is_single( )  || is_page() || is_home() ) && $query->is_main_query()  ) // TODO aps tres subtil, inlut cpt partout 
         {
             // recup l'existant
             $types_ds_loop = $query->get( 'post_type' );
@@ -368,19 +368,17 @@ class CustomPostType
     public function rediriger_template_cpt_callback( $template_a_utiliser ) 
     {
         global $post;
-        print_r( $post );
+
         if( $post->post_type == $this->post_type ) // eviter la redirection des pages ou post
         {
             $nom_template = 'single-' . $this->getConfig( 'slug' ) . '.php';
             $template_theme = locate_template( array( $nom_template ) );
             if( $template_theme ) 
             {
-                echo " template theme";
                 $template_a_utiliser = $template_theme; 
             }
             else 
             {
-                echo " template plugin";
                 $template_a_utiliser = EMP_PUBLIC_VIEWS . $nom_template; //template plugin
             }
         }

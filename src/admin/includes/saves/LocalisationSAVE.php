@@ -27,11 +27,11 @@ class LocalisationSAVE extends CustomPostTypeSave
 		update_post_meta( $post_id, PREFIX_META . 'region', $valeur_region );
     }
 
-    public function save_proche_de( $post_id )
+    public function save_villages( $post_id )
     {
-        $valeur_proche_de = sanitize_text_field( $_POST['valeur_proche_de'] );
+        $valeur_villages = sanitize_text_field( $_POST['valeur_villages'] );
 
-		update_post_meta( $post_id, PREFIX_META . 'proche_de', $valeur_proche_de );
+		update_post_meta( $post_id, PREFIX_META . 'villages', $valeur_villages );
     }
 
     public function save_centres_interets( $post_id )

@@ -10,8 +10,27 @@
  */
 function is_cpt_accueil( $post=null )
 {
-
     return is_cpt( 'accueil', $post );
+}
+
+function is_cpt_localisation( $post = null )
+{
+    return is_cpt( 'localisation', $post );
+}
+
+function is_cpt_appartement( $post = null )
+{
+    return is_cpt( 'appartement', $post );
+}
+
+function is_cpt_activite( $post = null )
+{
+    return is_cpt( 'activite', $post );
+}
+
+function is_cpt_contact( $post = null )
+{
+    return is_cpt( 'contact', $post );
 }
 
 /**
@@ -145,6 +164,15 @@ class CustomPostTypeApi
         case Utils::get_slug_cpt( 'accueil' ):
             $this->init_accueil($id, $post_type );
             break;
+        case Utils::get_slug_cpt( 'localisation' ):
+            $this->init_localisation( $id, $post_type );
+            break;
+        case Utils::get_slug_cpt( 'appartement' ):
+            $this->init_appartement( $id, $post_type );
+            break;
+        case Utils::get_slug_cpt( 'activite' ):
+            $this->init_activite( $id, $post_type );
+            break;
         case Utils::get_slug_cpt( 'contact' ):
             $this->init_contact( $id, $post_type );
             break;
@@ -152,25 +180,6 @@ class CustomPostTypeApi
     }
 
     public function init_accueil( $id, $post_type )
-    {
-        $this->ID = $id;
-        $this->post_type = $post_type;
-
-        $this->langue = get_the_terms( $this->ID, TAXO_LANGUE );
-
-    }
-    /**
-     * Cree les attributs coorepsondant aux valeurs du cpt organisme.
-     *
-     * recupere toutes les valeurs du cpt organsime dont l'id est donner en arg
-     * plusieurs attributs peuvent avoir la mm valeur, c'est des alias pous se simplifier la vie
-     *
-     * @param string $id l'id du post dont on veut les infos.
-     * @param string $post_type le type du post ( sous la forme ex: og_organisme_cpt -> Utils::get_type_cpt( 'organimse' ) fournit cette info.
-     *
-     * @return none
-     */
-    private function init_organisme( $id, $post_type )
     {
         $this->ID = $id;
         $this->label_id = __( 'ID: ', TEXT_DOMAIN );
@@ -181,116 +190,116 @@ class CustomPostTypeApi
         $this->permalink = get_permalink( $this->ID );
         $this->label_permalink = __( 'Permalink', TEXT_DOMAIN );
 
-        $this->tags = get_the_term_list( $this->ID, TAXO_TAG, '', '', '' );// get_terms( TAXO_TAG );
-        $this->label_tags = __( 'Tags', TEXT_DOMAIN );
+        $this->content =  get_post_field( 'post_content', $this->ID );
+        $this->label_content = __( "Contenu principal", TEXT_DOMAIN );
 
-        // id, date creation, numero entreprise
-        $this->id_organisme = get_post_meta( $this->ID, PREFIX_META . 'id_organisme', true );
-        $this->label_id_organisme = __( 'Id organisme', TEXT_DOMAIN );
+        // descriptions
+        $this->description_principale = $this->content;
+        $this->label_description_principale = __( "Description principal", TEXT_DOMAIN );
 
-        $this->date_creation_organisme = get_post_meta( $this->ID, PREFIX_META . 'date_creation_organisme', true );
-        $this->label_date_creation_organisme = __( "Date de création", TEXT_DOMAIN );
+        $this->description_secondaire = get_post_meta( $this->ID, PREFIX_META . 'description_secondaire', true );
+        $this->label_description_secondaire = __( "Description secondaire", TEXT_DOMAIN );
 
-        $this->numero_entreprise = get_post_meta( $this->ID, PREFIX_META . 'numero_entreprise', true );
-        $this->label_numero_entreprise = __( "Numéro d'entreprise", TEXT_DOMAIN );
+        $this->description_tertiaire = get_post_meta( $this->ID, PREFIX_META . 'description_tertiaire', true );
+        $this->label_description_tertiaire = __( "Description tertiaire", TEXT_DOMAIN );
 
-        // logo et site web
-        $this->nom_organisme = get_the_title( $this->ID );
-        $this->label_nom_organisme = __( "Nom de l'organisme", TEXT_DOMAIN );
+        //slogan
+        $this->slogan = get_post_meta( $this->ID, PREFIX_META . 'slogan', true );
+        $this->label_slogan = __( "slogan", TEXT_DOMAIN );
 
-        $this->description_organisme =  get_post_field( 'post_content', $this->ID );
-        $this->label_description_organisme = __( "Description", TEXT_DOMAIN );
+        // galleries
+        $this->galleries = get_post_galleries( $this->ID, false );
+        $this->explode_slider();
 
-        $this->logo = get_post_meta( $this->ID, PREFIX_META . 'logo', true );
-        $this->label_logo = __( "Logo :", TEXT_DOMAIN );
+    }
 
-        $this->site_web = get_post_meta( $this->ID, PREFIX_META . 'site_web', true );
-        $this->label_site_web = __( "Site Web", TEXT_DOMAIN );
+    public function init_localisation( $id, $post_type )
+    { 
+        $this->ID = $id;
+        $this->label_id = __( 'ID: ', TEXT_DOMAIN );
 
-        // adresse
-        $this->adresse_organisme = get_post_meta( $this->ID, PREFIX_META . 'adresse_organisme', true );
-        $this->label_adresse_organisme = __( "Adresse", TEXT_DOMAIN );
-        $this->explode_adresse( $this->adresse_organisme );
+        $this->post_type = $post_type;
+        $this->label_post_type = __( 'Post type : ', TEXT_DOMAIN );
 
-        $this->pays_organisme = get_post_meta( $this->ID, PREFIX_META . 'pays_organisme', true );
-        $this->label_pays_organisme = __( "Pays", TEXT_DOMAIN );
+        $this->permalink = get_permalink( $this->ID );
+        $this->label_permalink = __( 'Permalink', TEXT_DOMAIN );
 
-        $this->lat_long_organisme = get_post_meta( $this->ID, PREFIX_META . 'lat_long_organisme', true );
-        $this->label_lat_long_organisme = __( "Latitude Longitude", TEXT_DOMAIN );
-
-        // tel, fax
-        $this->tel_organisme = get_post_meta( $this->ID, PREFIX_META . 'tel_organisme', true );
-        $this->label_tel_organisme = __( "Téléphone", TEXT_DOMAIN );
-
-        $this->fax_organisme = get_post_meta( $this->ID, PREFIX_META . 'fax_organisme', true );
-        $this->label_fax_organisme = __( "Fax", TEXT_DOMAIN );
-
-        // reseaux sociaux
-        $this->reseaux_sociaux = get_post_meta( $this->ID, PREFIX_META . 'reseaux_sociaux', true );
-        $this->label_reseaux_sociaux = __( "Réseaux Sociaux", TEXT_DOMAIN );
-        $this->explode_reseaux_sociaux();
-
-        // contact
-        $this->nom_contact = get_post_meta( $this->ID, PREFIX_META . 'nom_contact', true );
-        $this->label_nom_contact = __( "Nom", TEXT_DOMAIN );
-
-        $this->prenom_contact = get_post_meta( $this->ID, PREFIX_META . 'prenom_contact', true );
-        $this->label_prenom_contact = __( "Prenom", TEXT_DOMAIN );
-
-        $this->email_contact = get_post_meta( $this->ID, PREFIX_META . 'email_contact', true );
-        $this->label_email_contact = __( "Email", TEXT_DOMAIN );
-       
-        // etic
-        $this->numero_etic = get_post_meta( $this->ID, PREFIX_META . 'numero_etic', true );
-        $this->label_numero_etic = __( "Numéro Etic", TEXT_DOMAIN );
-
-        $this->date_souscription = get_post_meta( $this->ID, PREFIX_META . 'date_souscription', true );
-        $this->label_date_souscription = __( "Date Souscription", TEXT_DOMAIN );
-
-        $this->seo = get_post_meta( $this->ID, PREFIX_META . 'seo', true );
-        $this->label_seo = LABEL_SEO;
-        $this->seo_active = ( $this->seo == 1 ) ? $this->label_seo : '';
-
-        $this->ec = get_post_meta( $this->ID, PREFIX_META . 'ec', true );
-        $this->label_ec = LABEL_EC;
-        $this->ec_active = ( $this->ec == 1 ) ? $this->label_ec : '';
-
-        $this->erp = get_post_meta( $this->ID, PREFIX_META . 'erp', true );
-        $this->label_erp = LABEL_ERP;
-        $this->erp_active = ( $this->erp == 1 ) ? $this->label_erp : '';
-
-        $this->em = get_post_meta( $this->ID, PREFIX_META . 'em', true );
-        $this->label_em = LABEL_EM;
-        $this->em_active = ( $this->em == 1 ) ? $this->label_em : '';
-
-        $this->ma = get_post_meta( $this->ID, PREFIX_META . 'ma', true );
-        $this->label_ma = LABEL_MA;
-        $this->ma_active = ( $this->ma == 1 ) ? $this->label_ma : '';
-
-        $this->fr = get_post_meta( $this->ID, PREFIX_META . 'fr', true );
-        $this->label_fr =  LABEL_FR;
-        $this->fr_active = ( $this->fr == 1 ) ? $this->label_fr : '';
+        $this->content =  get_post_field( 'post_content', $this->ID );
+        $this->label_content = __( "Contenu principal", TEXT_DOMAIN );
         
+        // acces
+        $this->acces = get_post_meta( $this->ID, PREFIX_META . 'acces', true );
+        $this->label_acces = __( "acces", TEXT_DOMAIN );
 
-        // pour se simplifier la vie // TODO ajouter les lables pour les alias 
-        $this->date_creation = $this->date_creation_organisme;
-        $this->pays = $this->pays_organisme;
-        $this->lat_long = $this->lat_long_organisme;
-        $this->telephone = $this->tel_organisme;
-        $this->tel = $this->tel_organisme;
-        $this->fax = $this->fax_organisme;
-        $this->nom = $this->nom_contact;
-        $this->prenom = $this->prenom_contact;
-        $this->email = $this->email_contact;
-        $this->title = $this->nom_organisme;
-        $this->content = $this->description_organisme;
-        $this->description = $this->description_organisme;
+        // region
+        $this->region = get_post_meta( $this->ID, PREFIX_META . 'region', true );
+        $this->label_region = __( "region", TEXT_DOMAIN );
 
-        // alias label
-        $this->label_date_creation = $this->label_date_creation_organisme;
-        $this->label_telephone = $this->label_tel_organisme;
-        $this->label_fax = $this->label_fax_organisme;
-    } 
+        // villages
+        $this->villages = get_post_meta( $this->ID, PREFIX_META . 'villages', true );
+        $this->label_villages = __( "villages", TEXT_DOMAIN );
+
+        // centres_interets
+        $this->centres_interets = get_post_meta( $this->ID, PREFIX_META . 'centres_interets', true );
+        $this->label_centres_interets = __( "centres_interets", TEXT_DOMAIN );
+    }
+
+    public function init_appartement( $id, $post_type )
+    {
+        $this->ID = $id;
+        $this->label_id = __( 'ID: ', TEXT_DOMAIN );
+
+        $this->post_type = $post_type;
+        $this->label_post_type = __( 'Post type : ', TEXT_DOMAIN );
+
+        $this->permalink = get_permalink( $this->ID );
+        $this->label_permalink = __( 'Permalink', TEXT_DOMAIN );
+
+        $this->content =  get_post_field( 'post_content', $this->ID );
+        $this->label_content = __( "Contenu principal", TEXT_DOMAIN );
+
+        // description
+        $this->description = get_post_meta( $this->ID, PREFIX_META . 'description', true );
+        $this->label_description = __( "description", TEXT_DOMAIN );
+
+        // commodites
+        $this->commodites = get_post_meta( $this->ID, PREFIX_META . 'commodites', true );
+        $this->label_commodites = __( "commodites", TEXT_DOMAIN );
+
+        // photos
+        $this->photos = get_post_meta( $this->ID, PREFIX_META . 'photos', true );
+        $this->label_photos = __( "photos", TEXT_DOMAIN );
+    }
+
+    public function init_activite( $id, $post_type )
+    {
+        $this->ID = $id;
+        $this->label_id = __( 'ID: ', TEXT_DOMAIN );
+
+        $this->post_type = $post_type;
+        $this->label_post_type = __( 'Post type : ', TEXT_DOMAIN );
+
+        $this->permalink = get_permalink( $this->ID );
+        $this->label_permalink = __( 'Permalink', TEXT_DOMAIN );
+
+        $this->content =  get_post_field( 'post_content', $this->ID );
+        $this->label_content = __( "Contenu principal", TEXT_DOMAIN );
+    }
+
+    public function init_contact( $id, $post_type )
+    {
+        $this->ID = $id;
+        $this->label_id = __( 'ID: ', TEXT_DOMAIN );
+
+        $this->post_type = $post_type;
+        $this->label_post_type = __( 'Post type : ', TEXT_DOMAIN );
+
+        $this->permalink = get_permalink( $this->ID );
+        $this->label_permalink = __( 'Permalink', TEXT_DOMAIN );
+
+        $this->content =  get_post_field( 'post_content', $this->ID );
+        $this->label_content = __( "Contenu principal", TEXT_DOMAIN );
+    }
 
     public function has_logo()
     {
@@ -304,173 +313,21 @@ class CustomPostTypeApi
         return $ok;
     }
 
-    public function has_reseaux_sociaux()
-    {
-        $ok = false;
-
-        if( isset( $this->reseaux_sociaux ) && ! empty( $this->reseaux_sociaux ) )
-        {
-            $ok = true;
-        }
-
-        return $ok;
-    }
-
-    public function has_telephone()
-    {
-        $ok = false;
-
-        if( isset( $this->telephone ) && ! empty( $this->telephone ) )
-        {
-            $ok = true;
-        }
-
-        return $ok;
-    }
-
-    public function has_fax()
-    {
-        $ok = false;
-
-        if( isset( $this->fax ) && ! empty( $this->fax ) )
-        {
-            $ok = true;
-        }
-
-        return $ok;
-    }
-
-    public function has_mail_contact()
-    {
-        $ok = false;
-
-        if( isset( $this->mail_contact ) && ! empty( $this->mail_contact ) )
-        {
-            $ok = true;
-        }
-
-        return $ok;
-    }
-
-    public function has_seo_active()
-    {
-        $ok = false;
-
-        if( isset( $this->seo ) && ! empty( $this->seo ) )
-        {
-            if( $this->seo == 1 )
-            {
-                $ok = true;
-            }
-        }
-
-        return $ok;
-    }
-
-    public function has_erp_active()
-    {
-        $ok = false;
-
-        if( isset( $this->erp ) && ! empty( $this->erp ) )
-        {
-            if( $this->erp == 1 )
-            {
-                $ok = true;
-            }
-        }
-
-        return $ok;
-    }
-
-    public function has_ec_active()
-    {
-        $ok = false;
-
-        if( isset( $this->ec ) && ! empty( $this->ec ) )
-        {
-            if( $this->ec == 1 )
-            {
-                $ok = true;
-            }
-        }
-
-        return $ok;
-    }
-
-    public function has_em_active()
-    {
-        $ok = false;
-
-        if( isset( $this->em ) && ! empty( $this->em ) )
-        {
-            if( $this->em == 1 )
-            {
-                $ok = true;
-            }
-        }
-
-        return $ok;
-    }
-
-    public function has_ma_active()
-    {
-        $ok = false;
-
-        if( isset( $this->ma ) && ! empty( $this->ma ) )
-        {
-            if( $this->ma == 1 )
-            {
-                $ok = true;
-            }
-        }
-
-        return $ok;
-    }
-
-    public function has_fr_active()
-    {
-        global $certificationFr;
-        $ok = false;
-
-        if( isset( $this->fr ) && ! empty( $this->fr ) )
-        {
-            if( $this->fr == 1 && $certificationFr == 'yes' )
-            {
-                $ok = true;
-            }
-        }
-
-        return $ok;
-    }
 
     public function is_etic()
     {
        // duplicate avec Utils est etic  
         return has_term( Utils::get_nom_tag( ID_TAG_ETIC ), TAXO_TAG, $this->ID );
     }
-    /**
-     * explode l'adresse.
-     *
-     * cree les attributs pour chaque elements de l'adresse ( rue, numero, bt, cp, localite )
-     *
-     * @return none
-     */
-    private function explode_adresse()
+
+    private function explode_slider()
     {
-        $elements_adresse = explode( ';', $this->adresse_organisme );
-
-        // elemennts
-        $this->rue = ( array_key_exists( 0, $elements_adresse) ) ? $elements_adresse[0] : '';
-        $this->numero= ( array_key_exists( 1, $elements_adresse ) ) ? $elements_adresse[1] : '';
-        $this->bt = ( array_key_exists( 2, $elements_adresse ) )? $elements_adresse[2] : '';
-        $this->cp = ( array_key_exists( 3, $elements_adresse ) ) ?$elements_adresse[3] : '';
-        $this->localite = ( array_key_exists( 4, $elements_adresse ) ) ? $elements_adresse[4] : '';
-
-        // alias
-        $this->boite = $this->bt;
-        $this->code_poste = $this->cp;
-        $this->localite_organisme = $this->localite;
-//TODO reforater adresse
+        $this->slider = array();
+        $tmp = ( array_key_exists( 0, $this->galleries ) ) ? $this->galleries[0]['ids'] : false;
+        if( $tmp )
+        {
+            $this->slider = explode( ',', $tmp );
+        }
     }
 
     /**

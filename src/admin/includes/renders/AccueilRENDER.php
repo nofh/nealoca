@@ -21,13 +21,14 @@ class AccueilRENDER
             add_meta_box( 'description_secondaire', 'Description Secondaire', array( $this, 'description_secondaire_render' ), $post_type, 'advanced', 'default' );                
             add_meta_box( 'description_tertiaire', 'Description Tertiaire', array( $this, 'description_tertiaire_render' ), $post_type, 'advanced', 'default' );                
             add_meta_box( 'slogan', 'Slogan', array( $this, 'slogan_render' ), $post_type, 'advanced', 'default' );                
+            add_meta_box( 'slider_gallerie', 'Slider et Gallerie', array( $this, 'slider_gallerie_render' ), $post_type, 'advanced', 'default' );                
         }
     }
 
     public function description_principale_render( $post )
     {
         wp_nonce_field( 'description_principale_box', 'description_principale_nonce' );
-        $content = get_post_meta( $post->ID, PREFIX_META . 'description_principale', true );
+        $content = get_post_field( 'post_content', $post->ID );
 
         $settings = array( 'media_buttons' => false );
         wp_editor( $content, 'valeur_description_principale', $settings );
@@ -59,6 +60,16 @@ class AccueilRENDER
         $settings = array( 'media_buttons' => false, 'textarea_rows' => 2 );
         wp_editor( $content, 'valeur_slogan', $settings );
 
+    }
+
+    public function slider_gallerie_render( $post )
+    {
+        wp_nonce_field( 'slider_gallerie', 'slider_gallerie_nonce' );
+        $content = get_post_meta( $post->ID, PREFIX_META . 'slider_gallerie', true );
+            //" Le texte n'est pas prit en compte, la zone de texte ne sert qu'à afficher l'importation de la gallerie ";//get_post_meta( $post->ID, PREFIX_META . 'slider_gallerie', true );
+
+        $settings = array( 'media_buttons' => true );
+        wp_editor( $content, 'valeur_slider_gallerie', $settings );
     }
 
 }

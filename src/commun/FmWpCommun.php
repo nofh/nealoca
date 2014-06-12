@@ -47,7 +47,6 @@ class FmWpCommun
         $appartement = new AppartementCPT();
         $activite = new ActiviteCPT();
         $contact = new ContactCPT();
-        $posteur = new NealocaPST( 'suppression' );
 
 	}
  
