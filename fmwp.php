@@ -76,6 +76,9 @@ if( is_admin() )
 	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/saves/AppartementSAVE.php';
 	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/saves/ActiviteSAVE.php';
 	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/saves/ContactSAVE.php';
+    // vendors
+	include_once plugin_dir_path( __FILE__ ) . 'src/admin/assets/vendors/simple_html_dom.php';
+
 	add_action( 'plugins_loaded', array( 'FmWpAdmin', 'get_instance' ) );
 }
 ?>

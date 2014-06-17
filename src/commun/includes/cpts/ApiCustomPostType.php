@@ -194,7 +194,7 @@ class CustomPostTypeApi
         $this->label_content = __( "Contenu principal", TEXT_DOMAIN );
 
         // descriptions
-        $this->description_principale = $this->content;
+        $this->description_principale = get_post_meta( $this->ID, PREFIX_META . 'description_principale', true );
         $this->label_description_principale = __( "Description principal", TEXT_DOMAIN );
 
         $this->description_secondaire = get_post_meta( $this->ID, PREFIX_META . 'description_secondaire', true );
@@ -207,9 +207,11 @@ class CustomPostTypeApi
         $this->slogan = get_post_meta( $this->ID, PREFIX_META . 'slogan', true );
         $this->label_slogan = __( "slogan", TEXT_DOMAIN );
 
-        // galleries
-        $this->galleries = get_post_galleries( $this->ID, false );
+        // slider
         $this->explode_slider();
+
+        // gallerie
+        $this->explode_gallerie();
 
     }
 
@@ -231,6 +233,21 @@ class CustomPostTypeApi
         $this->acces = get_post_meta( $this->ID, PREFIX_META . 'acces', true );
         $this->label_acces = __( "acces", TEXT_DOMAIN );
 
+        $this->coord_arrivee =  get_post_meta( $this->ID, PREFIX_META . 'coord_arrivee', true );
+        $this->label_arrivee =  get_post_meta( $this->ID, PREFIX_META . 'nom_arrivee', true );
+
+        $this->coord_depart_un =  get_post_meta( $this->ID, PREFIX_META . 'coord_depart_un', true );
+        $this->label_depart_un =  get_post_meta( $this->ID, PREFIX_META . 'nom_depart_un', true );
+
+        $this->coord_depart_deux =  get_post_meta( $this->ID, PREFIX_META . 'coord_depart_deux', true );
+        $this->label_depart_deux =  get_post_meta( $this->ID, PREFIX_META . 'nom_depart_deux', true );
+
+        $this->coord_depart_trois =  get_post_meta( $this->ID, PREFIX_META . 'coord_depart_trois', true );
+        $this->label_depart_trois =  get_post_meta( $this->ID, PREFIX_META . 'nom_depart_trois', true );
+
+        $this->coord_depart_quatre =  get_post_meta( $this->ID, PREFIX_META . 'coord_depart_quatre', true );
+        $this->label_depart_quatre =  get_post_meta( $this->ID, PREFIX_META . 'nom_depart_quatre', true );
+
         // region
         $this->region = get_post_meta( $this->ID, PREFIX_META . 'region', true );
         $this->label_region = __( "region", TEXT_DOMAIN );
@@ -240,7 +257,19 @@ class CustomPostTypeApi
         $this->label_villages = __( "villages", TEXT_DOMAIN );
 
         // centres_interets
-        $this->centres_interets = get_post_meta( $this->ID, PREFIX_META . 'centres_interets', true );
+        $this->nombre_centres_interets = get_post_meta( $this->ID, PREFIX_META . 'cis_nb', true );
+        $this->centres_interets = array();
+        for( $i = 0; $i < $this->nombre_centres_interets; $i++ )
+        {
+            $nom_var_label = 'label_centre_interet_' . $i;
+            $nom_var_coord = 'coord_centre_interet_' . $i;
+
+            $this->$nom_var_label = get_post_meta( $this->ID, PREFIX_META . 'ci_label_' . $i, true );
+            $this->$nom_var_coord = get_post_meta( $this->ID, PREFIX_META . 'ci_coord_' . $i, true );
+
+            // 
+            $this->centres_interets[$this->$nom_var_label] = $this->$nom_var_coord;
+        }
         $this->label_centres_interets = __( "centres_interets", TEXT_DOMAIN );
     }
 
@@ -323,10 +352,22 @@ class CustomPostTypeApi
     private function explode_slider()
     {
         $this->slider = array();
-        $tmp = ( array_key_exists( 0, $this->galleries ) ) ? $this->galleries[0]['ids'] : false;
-        if( $tmp )
+        $slider = get_post_meta( $this->ID, PREFIX_META . 'slider', true );
+
+        if( $slider )
         {
-            $this->slider = explode( ',', $tmp );
+            $this->slider = explode( ';', $slider );
+        }
+    }
+
+    private function explode_gallerie()
+    {
+        $this->gallerie = array();
+        $gallerie = get_post_meta( $this->ID, PREFIX_META . 'gallerie', true );
+
+        if( $gallerie )
+        {
+            $this->gallerie = explode( ';', $gallerie );
         }
     }
 
