@@ -35,6 +35,7 @@ class FmWpAdmin
 		wp_enqueue_script( 'js-admin', plugins_url( 'assets/js/admin.js', __FILE__ ), array(), VERSION );
 		wp_enqueue_script( 'js-admin-villages', plugins_url( 'assets/js/villages.js', __FILE__ ), array(), VERSION );
 		wp_enqueue_script( 'js-admin-centres_interets', plugins_url( 'assets/js/centres_interets.js', __FILE__ ), array(), VERSION );
+		wp_enqueue_script( 'js-admin-commodites', plugins_url( 'assets/js/commodites.js', __FILE__ ), array(), VERSION );
     }
 
     // creation menu

@@ -289,8 +289,8 @@ class CustomPostTypeApi
         $this->label_description = __( "description", TEXT_DOMAIN );
 
         // commodites
-        $this->commodites = get_post_meta( $this->ID, PREFIX_META . 'commodites', true );
-        $this->label_commodites = __( "commodites", TEXT_DOMAIN );
+        $this->nombre_commodites = get_post_meta( $this->ID, PREFIX_META . 'commodites_nb', true );
+        $this->formater_commodites();
 
         // photos
         $this->photos = get_post_meta( $this->ID, PREFIX_META . 'photos', true );
@@ -335,6 +335,22 @@ class CustomPostTypeApi
         if( is_array( $this->centres_interets) )
         {
             if( count( $this->centres_interets ) > 0 ) 
+            {
+
+                $ok = true;
+            }
+        }
+
+        return $ok;
+    }
+
+    public function has_commodites()
+    {
+        $ok = false;
+
+        if( is_array( $this->commodites) )
+        {
+            if( count( $this->commodites ) > 0 ) 
             {
 
                 $ok = true;
@@ -403,7 +419,7 @@ class CustomPostTypeApi
 
     }
 
-     public function formater_villages()
+    public function formater_villages()
     {
         $this->villages = array();
 
@@ -420,6 +436,25 @@ class CustomPostTypeApi
         }
 
         $this->label_villages = __( "villages", TEXT_DOMAIN );
+    }
+
+    public function formater_commodites()
+    {
+        $this->commodites = array();
+
+        for( $i = 0; $i < $this->nombre_commodites; $i++ )
+        {
+            $nom_var_label = 'label_commodite_' . $i;
+            $nom_var_quantite = 'quantite_commodite_' . $i;
+
+            $this->$nom_var_label = get_post_meta( $this->ID, PREFIX_META . 'commodite_label_' . $i, true );
+            $this->$nom_var_quantite = get_post_meta( $this->ID, PREFIX_META . 'commodite_quantite_' . $i, true );
+
+            $this->commodites[$this->$nom_var_label] = $this->$nom_var_quantite;
+
+        }
+
+        $this->label_commodites = __( "commodites", TEXT_DOMAIN );
     }
 
 }

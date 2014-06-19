@@ -10,21 +10,50 @@ class AppartementSAVE extends CustomPostTypeSave
     {
         $valeur_description = sanitize_text_field( $_POST['valeur_description'] );
 
-		update_post_meta( $post_id, PREFIX_META . 'description', $valeur_description );
+        update_post_meta( $post_id, PREFIX_META . 'description', $valeur_description );
     }
 
     public function save_commodites( $post_id )
     {
-        $valeur_commodites = sanitize_text_field( $_POST['valeur_commodites'] );
+        $commodites_nb = sanitize_text_field( $_POST['commodites_nb'] );
+        $commodites_nb = intval( $commodites_nb );
 
-		update_post_meta( $post_id, PREFIX_META . 'commodites', $valeur_commodites );
+        // 
+        for( $i =  0; $i < $commodites_nb; $i++ )
+        {
+            $index_label_commodite = 'commodite_label_' . $i;
+            $index_quantite_commodite = 'commodite_quantite_' . $i;
+
+            // recuperation 
+            $valeur_label_commodite = sanitize_text_field( $_POST[$index_label_commodite] );
+            $valeur_quantite_commodite = sanitize_text_field( $_POST[$index_quantite_commodite] );
+
+            // securiter
+            if( ! empty( $valeur_label_commodite ) && ! empty( $valeur_quantite_commodite ) )
+            {
+                // save
+                update_post_meta( $post_id, PREFIX_META . $index_label_commodite, $valeur_label_commodite );
+                update_post_meta( $post_id, PREFIX_META . $index_quantite_commodite, $valeur_quantite_commodite );
+            }
+            else
+            {
+                // supprimer 
+                delete_post_meta( $post_id, PREFIX_META . $index_label_commodite, $valeur_label_commodite );
+                delete_post_meta( $post_id, PREFIX_META . $index_quantite_commodite, $valeur_quantite_commodite );
+
+                // mise a jour
+                $commodites_nb = ( $commodites_nb <= 0 ) ? 0 : $commodites_nb-1;
+            }
+
+            update_post_meta( $post_id, PREFIX_META . 'commodites_nb', $commodites_nb );
+        }
     }
 
     public function save_photos( $post_id )
     {
         $valeur_photos = sanitize_text_field( $_POST['valeur_photos'] );
 
-		update_post_meta( $post_id, PREFIX_META . 'photos', $valeur_photos );
+        update_post_meta( $post_id, PREFIX_META . 'photos', $valeur_photos );
     }
 }
 ?>

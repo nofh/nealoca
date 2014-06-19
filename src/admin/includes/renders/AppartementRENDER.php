@@ -35,10 +35,34 @@ class AppartementRENDER
     public function commodites_render( $post )
     { 
         wp_nonce_field( 'commodites_box', 'commodites_nonce' );
-        $content = get_post_meta( $post->ID, PREFIX_META . 'commodites', true );
 
-        $settings = array( 'media_buttons' => false, 'textarea_rows' => 12 );
-        wp_editor( $content, 'valeur_commodites', $settings );
+        // recuper le nb de commodite
+        $commodites_nb = get_post_meta( $post->ID, PREFIX_META . 'commodites_nb', true );
+        echo "<ul id='liste_commodites'>";
+        for( $i = 0; $i < $commodites_nb; $i++ )
+        {
+            $index_label = 'commodite_label_' . $i;
+            $index_quantite = 'commodite_quantite_' . $i;
+
+            $commodite_label = get_post_meta( $post->ID, PREFIX_META . $index_label, true );
+            $commodite_quantite = get_post_meta( $post->ID, PREFIX_META . $index_quantite, true );
+
+            // label
+            echo "<li>";
+            echo "<label for='${index_label}'>Label :</label>";
+            echo "<input type='text' name='${index_label}' id='${index_label}' value='${commodite_label}'>";
+ 
+            // quantite
+            echo "<label for='${index_quantite}'>Quantités :</label>";
+            echo "<input type='text' name='${index_quantite}' id='${index_quantite}' value='${commodite_quantite}'>";
+        }
+        echo "</ul>";
+
+        // bouton et hidden
+        echo "<!-- nb de commodites -->";
+        echo "<button type='button' id='ajouter_commodite'>Ajouter</button>";
+        echo "<input type='hidden' name='commodites_nb' id='commodites_nb' value='${i}'>";
+
     }
     
     public function photos_render( $post )
