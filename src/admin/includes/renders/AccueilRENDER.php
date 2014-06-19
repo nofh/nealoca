@@ -22,7 +22,7 @@ class AccueilRENDER
             add_meta_box( 'description_tertiaire', 'Description Tertiaire', array( $this, 'description_tertiaire_render' ), $post_type, 'advanced', 'default' );                
             add_meta_box( 'slogan', 'Slogan', array( $this, 'slogan_render' ), $post_type, 'advanced', 'default' );                
             add_meta_box( 'slider', 'Slider', array( $this, 'slider_render' ), $post_type, 'advanced', 'default' );                
-            add_meta_box( 'gallerie', 'Gallerie', array( $this, 'gallerie_render' ), $post_type, 'advanced', 'default' );                
+            add_meta_box( 'gallerie', 'Gallerie', array( $this, 'gallerie_accueil_render' ), $post_type, 'advanced', 'default' );                
         }
     }
 
@@ -82,11 +82,11 @@ class AccueilRENDER
         wp_editor( $content, 'valeur_slider', $settings );
     }
 
-    public function gallerie_render( $post )
+    public function gallerie_accueil_render( $post )
     {
-        wp_nonce_field( 'gallerie', 'gallerie_nonce' );
+        wp_nonce_field( 'gallerie_accueil', 'gallerie_accueil_nonce' );
 
-        $gallerie_string = get_post_meta( $post->ID, PREFIX_META . 'gallerie', true );
+        $gallerie_string = get_post_meta( $post->ID, PREFIX_META . 'gallerie_accueil', true );
         $gallerie = explode( ';', $gallerie_string );
 
         // recuperation des images 
@@ -98,7 +98,7 @@ class AccueilRENDER
         }
 
         $settings = array( 'media_buttons' => true, 'textarea_rows' => 12 );
-        wp_editor( $content, 'valeur_gallerie', $settings );
+        wp_editor( $content, 'valeur_gallerie_accueil', $settings );
     }
 
 

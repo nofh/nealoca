@@ -76,14 +76,14 @@ class AccueilSAVE extends CustomPostTypeSave
 		update_post_meta( $post_id, PREFIX_META . 'slider', $slider_string );
     }
 
-    public function save_gallerie( $post_id )
+    public function save_gallerie_accueil( $post_id )
     {
         // recuprer le content 
         $gallerie_string = '';
 
         // recueprer les urls des images en attachement ( fct std de wp )
         $hrefs = array();
-        $html = str_get_html( $_POST['valeur_gallerie'] );
+        $html = str_get_html( $_POST['valeur_gallerie_accueil'] );
         if( is_object( $html ) )
         {
             $liens = $html->find( 'a' );
@@ -109,7 +109,7 @@ class AccueilSAVE extends CustomPostTypeSave
         }
 
         // save en db 
-		update_post_meta( $post_id, PREFIX_META . 'gallerie', $gallerie_string );
+		update_post_meta( $post_id, PREFIX_META . 'gallerie_accueil', $gallerie_string );
     }
 
 

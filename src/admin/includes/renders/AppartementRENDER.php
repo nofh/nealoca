@@ -19,7 +19,7 @@ class AppartementRENDER
         {
             add_meta_box( 'description', 'Description', array( $this, 'description_render' ), $post_type, 'advanced', 'default' );                
             add_meta_box( 'commodites', 'Commodités', array( $this, 'commodites_render' ), $post_type, 'advanced', 'default' );                
-            add_meta_box( 'photos', 'Photos', array( $this, 'photos_render' ), $post_type, 'advanced', 'default' );                
+            add_meta_box( 'gallerie', 'Gallerie', array( $this, 'gallerie_appartement_render' ), $post_type, 'advanced', 'default' );                
         }
     }
 
@@ -65,13 +65,23 @@ class AppartementRENDER
 
     }
     
-    public function photos_render( $post )
+    public function gallerie_appartement_render( $post )
     {
-        wp_nonce_field( 'photos_box', 'photos_nonce' );
-        $content = get_post_meta( $post->ID, PREFIX_META . 'photos', true );
+        wp_nonce_field( 'gallerie_appartement', 'gallerie_appartement_nonce' );
 
-        $settings = array( 'media_buttons' => false, 'textarea_rows' => 8 );
-        wp_editor( $content, 'valeur_photos', $settings );
+        $gallerie_string = get_post_meta( $post->ID, PREFIX_META . 'gallerie_appartement', true );
+        $gallerie = explode( ';', $gallerie_string );
+
+        // recuperation des images 
+        $content = "";
+        foreach( $gallerie as $image_id ) 
+        {
+            $url = wp_get_attachment_url( $image_id ) ;
+            $content .= "<a href='${url}'>" . wp_get_attachment_image( $image_id, 'medium' ) . "</a>"; 
+        }
+
+        $settings = array( 'media_buttons' => true, 'textarea_rows' => 12 );
+        wp_editor( $content, 'valeur_gallerie_appartement', $settings );
     }
 }
 ?>

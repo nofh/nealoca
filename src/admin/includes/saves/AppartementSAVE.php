@@ -49,11 +49,41 @@ class AppartementSAVE extends CustomPostTypeSave
         }
     }
 
-    public function save_photos( $post_id )
+    public function save_gallerie_appartement( $post_id )
     {
-        $valeur_photos = sanitize_text_field( $_POST['valeur_photos'] );
+        // recuprer le content 
+        $gallerie_string = '';
 
-        update_post_meta( $post_id, PREFIX_META . 'photos', $valeur_photos );
+        // recueprer les urls des images en attachement ( fct std de wp )
+        $hrefs = array();
+        $html = str_get_html( $_POST['valeur_gallerie_appartement'] );
+        if( is_object( $html ) )
+        {
+            $liens = $html->find( 'a' );
+            foreach( $liens as $element ) 
+            {
+                 $hrefs[] =  str_replace( '\"', '', $element->href ) ;
+            }
+
+            // creation du gallerie 
+            $gallerie = array();
+            $images = get_children( "post_parent=$post_id&post_type=attachment&post_mime_type=image" );
+            foreach( $images as $image )
+            {
+                // ds le gallerie on ne met que les attachement ds le post mais aussi ds la meta box gallerie 
+                if( in_array( $image->guid, $hrefs ) )
+                {
+                    $gallerie[] = $image->ID;
+                }
+            }
+
+            // preparation pour la save en db
+            $gallerie_string = implode( ';', $gallerie );
+        }
+
+        // save en db 
+		update_post_meta( $post_id, PREFIX_META . 'gallerie_appartement', $gallerie_string );
     }
+
 }
 ?>

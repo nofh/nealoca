@@ -293,7 +293,7 @@ class CustomPostTypeApi
         $this->formater_commodites();
 
         // photos
-        $this->photos = get_post_meta( $this->ID, PREFIX_META . 'photos', true );
+        $this->explode_gallerie();
         $this->label_photos = __( "photos", TEXT_DOMAIN );
     }
 
@@ -328,6 +328,40 @@ class CustomPostTypeApi
     }
 
     // has
+    public function has_slider()
+    {
+        $ok = false;
+
+        if( isset( $this->slider ) && ! empty( $this->slider ) )
+        {
+            if( is_array( $this->slider ) )
+            {
+                if( count( $this->slider ) > 0 )
+                {
+                    $ok = true;
+                }
+            }
+        }
+        return $ok; 
+    }
+
+    public function has_gallerie()
+    {
+        $ok = false;
+
+        if( isset( $this->gallerie ) && ! empty( $this->gallerie ) )
+        {
+            if( is_array( $this->gallerie ) )
+            {
+                if( count( $this->gallerie ) > 0 )
+                {
+                    $ok = true;
+                }
+            }
+        }
+        return $ok; 
+
+    }
     public function has_centres_interets()
     {
         $ok = false;
@@ -375,7 +409,18 @@ class CustomPostTypeApi
     private function explode_gallerie()
     {
         $this->gallerie = array();
-        $gallerie = get_post_meta( $this->ID, PREFIX_META . 'gallerie', true );
+        $nom_champ = 'gallerie_accueil';
+        switch( $this->post_type )
+        {
+        case Utils::get_slug_cpt( 'accueil' ):
+            $nom_champ = 'gallerie_accueil';
+            break;
+        case Utils::get_slug_cpt( 'appartement' ):
+            $nom_champ = 'gallerie_appartement';
+            break;
+        }
+
+        $gallerie = get_post_meta( $this->ID, PREFIX_META . $nom_champ, true );
 
         if( $gallerie )
         {
@@ -456,6 +501,5 @@ class CustomPostTypeApi
 
         $this->label_commodites = __( "commodites", TEXT_DOMAIN );
     }
-
 }
 ?>

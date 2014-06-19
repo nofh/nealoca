@@ -36,5 +36,10 @@ class Utils
              }
          }
      }
+
+     public static function get_attachement_id_by_url( $url )
+     {
+         
+     }
 }
 ?>
