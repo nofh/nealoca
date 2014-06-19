@@ -295,6 +295,10 @@ class CustomPostTypeApi
         // photos
         $this->explode_gallerie();
         $this->label_photos = __( "photos", TEXT_DOMAIN );
+
+        // disponibilite
+        $this->disponibilite = get_post_meta( $this->ID, PREFIX_META . 'disponibilite', true );
+        $this->label_disponibilite = __( 'Disponibilité', TEXT_DOMAIN );
     }
 
     public function init_activite( $id, $post_type )
@@ -327,6 +331,18 @@ class CustomPostTypeApi
         $this->label_content = __( "Contenu principal", TEXT_DOMAIN );
     }
 
+    // is
+    public function est_disponible()
+    {
+        $ok = false;
+
+        if( $this->disponibilite == 'oui' )
+        {
+            $ok = true;
+        }
+
+        return $ok;
+    }
     // has
     public function has_slider()
     {

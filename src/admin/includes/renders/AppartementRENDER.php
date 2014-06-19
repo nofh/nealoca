@@ -20,6 +20,7 @@ class AppartementRENDER
             add_meta_box( 'description', 'Description', array( $this, 'description_render' ), $post_type, 'advanced', 'default' );                
             add_meta_box( 'commodites', 'Commodités', array( $this, 'commodites_render' ), $post_type, 'advanced', 'default' );                
             add_meta_box( 'gallerie', 'Gallerie', array( $this, 'gallerie_appartement_render' ), $post_type, 'advanced', 'default' );                
+            add_meta_box( 'disponibilite', 'Disponibilite', array( $this, 'disponibilite_render' ), $post_type, 'advanced', 'default' );                
         }
     }
 
@@ -82,6 +83,27 @@ class AppartementRENDER
 
         $settings = array( 'media_buttons' => true, 'textarea_rows' => 12 );
         wp_editor( $content, 'valeur_gallerie_appartement', $settings );
+    }
+
+    public function disponibilite_render( $post )
+    {
+        wp_nonce_field( 'disponibilite', 'disponibilite_nonce' );
+
+
+        $disponibilite = get_post_meta( $post->ID, PREFIX_META . 'disponibilite', true );
+        $checked_oui = '';
+        $checked_non = '';
+        if( $disponibilite == 'oui' )
+        {
+            $checked_oui = "checked='checked'";
+        }
+        else
+        {
+            $checked_non = "checked='checked'";
+        }
+
+        echo "<input type='radio' name='disponibilite' value='oui' $checked_oui>Disponible"; 
+        echo "<input type='radio' name='disponibilite' value='non' $checked_non>Non Disponible";
     }
 }
 ?>

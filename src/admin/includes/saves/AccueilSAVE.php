@@ -112,6 +112,12 @@ class AccueilSAVE extends CustomPostTypeSave
 		update_post_meta( $post_id, PREFIX_META . 'gallerie_accueil', $gallerie_string );
     }
 
+    public function save_disponibilite( $post_id )
+    {
+        $valeur_disponibilite = sanitize_text_field( $_POST['disponibilite'] );
+		update_post_meta( $post_id, PREFIX_META . 'disponibilite', $valeur_disponibilite );
+    }
+
 
 }
 ?>
