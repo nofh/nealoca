@@ -24,19 +24,6 @@ class LocalisationRENDER
         }
     }
 
-    public function emplacement_render( $post )
-    {
-        wp_nonce_field( 'emplacement_box', 'emplacement_nonce' );
-        /*
-            $content = get_post_meta( $post->ID, PREFIX_META . 'emplacement', true );
-
-        $settings = array( 'media_buttons' => false, 'textarea_rows' => 5 );
-        wp_editor( $content, 'valeur_emplacement', $settings );
-         */
-
-        
-    }
-
     public function acces_render( $post )
     { 
         wp_nonce_field( 'acces_box', 'acces_nonce' );
@@ -58,6 +45,13 @@ class LocalisationRENDER
         $content_coord_depart_trois = get_post_meta( $post->ID, PREFIX_META . 'coord_depart_trois', true );
         $content_coord_depart_quatre = get_post_meta( $post->ID, PREFIX_META . 'coord_depart_quatre', true );
 
+        // adresse
+        $content_adr_arrivee = get_post_meta( $post->ID, PREFIX_META . 'adr_arrivee', true );
+        $content_adr_depart_un = get_post_meta( $post->ID, PREFIX_META . 'adr_depart_un', true );
+        $content_adr_depart_deux = get_post_meta( $post->ID, PREFIX_META . 'adr_depart_deux', true );
+        $content_adr_depart_trois = get_post_meta( $post->ID, PREFIX_META . 'adr_depart_trois', true );
+        $content_adr_depart_quatre = get_post_meta( $post->ID, PREFIX_META . 'adr_depart_quatre', true );
+
         // 
         ?>
         <table>
@@ -78,12 +72,20 @@ class LocalisationRENDER
             <td><input type="text" name="valeur_nom_depart_quatre" id="valeur_nom_depart_quatre" value="<?php echo $content_nom_depart_quatre?>"></td>
         </tr>
         <tr>
-            <th>coordonnees</th>
+            <th>Coordonnees</th>
             <td><input type="text" name="valeur_coord_arrivee" id="valeur_coord_arrivee" value="<?php echo $content_coord_arrivee?>"></td>
             <td><input type="text" name="valeur_coord_depart_un" id="valeur_coord_depart_un" value="<?php echo $content_coord_depart_un?>"></td>
             <td><input type="text" name="valeur_coord_depart_deux" id="valeur_coord_depart_deux" value="<?php echo $content_coord_depart_deux?>"></td>
             <td><input type="text" name="valeur_coord_depart_trois" id="valeur_coord_depart_trois" value="<?php echo $content_coord_depart_trois?>"></td>
             <td><input type="text" name="valeur_coord_depart_quatre" id="valeur_coord_depart_quatre" value="<?php echo $content_coord_depart_quatre?>"></td>
+        </tr>
+        <tr>
+            <th>Adresse</th>
+            <td><input type="text" name="valeur_adr_arrivee" id="valeur_adr_arrivee" value="<?php echo $content_adr_arrivee?>"></td>
+            <td><input type="text" name="valeur_adr_depart_un" id="valeur_adr_depart_un" value="<?php echo $content_adr_depart_un?>"></td>
+            <td><input type="text" name="valeur_adr_depart_deux" id="valeur_adr_depart_deux" value="<?php echo $content_adr_depart_deux?>"></td>
+            <td><input type="text" name="valeur_adr_depart_trois" id="valeur_adr_depart_trois" value="<?php echo $content_adr_depart_trois?>"></td>
+            <td><input type="text" name="valeur_adr_depart_quatre" id="valeur_adr_depart_quatre" value="<?php echo $content_adr_depart_quatre?>"></td>
         </tr>
 
         </table>
@@ -106,10 +108,39 @@ class LocalisationRENDER
     public function villages_render( $post )
     {
         wp_nonce_field( 'villages_box', 'villages_nonce' );
-        $content = get_post_meta( $post->ID, PREFIX_META . 'villages', true );
+
+        // recuper le nb de village
+        $villages_nb = get_post_meta( $post->ID, PREFIX_META . 'villages_nb', true );
+        echo "<ul id='liste_villages'>";
+        for( $i = 0; $i < $villages_nb; $i++ )
+        {
+            $index_label = 'village_label_' . $i;
+            $index_coord = 'village_coord_' . $i;
+
+            $village_label = get_post_meta( $post->ID, PREFIX_META . $index_label, true );
+            $village_coord = get_post_meta( $post->ID, PREFIX_META . $index_coord, true );
+
+            // label
+            echo "<li>";
+            echo "<label for='${index_label}'>Label :</label>";
+            echo "<input type='text' name='${index_label}' id='${index_label}' value='${village_label}'>";
+ 
+            // coord
+            echo "<label for='${index_coord}'>Coordonees :</label>";
+            echo "<input type='text' name='${index_coord}' id='${index_coord}' value='${village_coord}'>";
+        }
+        echo "</ul>";
+
+        // bouton et hidden
+        echo "<!-- nb de villages -->";
+        echo "<button type='button' id='ajouter_village'>Ajouter</button>";
+        echo "<input type='hidden' name='villages_nb' id='villages_nb' value='${i}'>";
+
+        // texte 
+        $content = get_post_meta( $post->ID, PREFIX_META . 'texte_village', true );
 
         $settings = array( 'media_buttons' => false, 'textarea_rows' => 5 );
-        wp_editor( $content, 'valeur_villages', $settings );
+        wp_editor( $content, 'valeur_texte_village', $settings );
     }
 
     public function centres_interets_render( $post )
@@ -129,20 +160,32 @@ class LocalisationRENDER
         {
             $index_label = 'ci_label_' . $i;
             $index_coord = 'ci_coord_' . $i;
+            $index_categorie = 'ci_categorie_' . $i;
 
             $ci_label = get_post_meta( $post->ID, PREFIX_META . $index_label, true );
             $ci_coord = get_post_meta( $post->ID, PREFIX_META . $index_coord, true );
+            $ci_categorie = get_post_meta( $post->ID, PREFIX_META . $index_categorie, true );
 
             // label
             echo "<li>";
-            echo "<label for='ci_label_1'>Label :</label>";
-            echo "<input type='text' name='ci_label_1' id='ci_label_1' value='${ci_label}'>";
+            echo "<label for='${index_label}'>Label :</label>";
+            echo "<input type='text' name='${index_label}' id='${index_label}' value='${ci_label}'>";
  
             // coord
-            echo "<label for='ci_coord_1'>Coordonees :</label>";
-            echo "<input type='text' name='ci_coord_1' id='ci_coord_1' value='${ci_coord}'>";
-            echo "</li>";
+            echo "<label for='${index_coord}'>Coordonees :</label>";
+            echo "<input type='text' name='${index_coord}' id='${index_coord}' value='${ci_coord}'>";
 
+            // categorie
+            echo "<select name='${index_categorie}'>";
+            
+            $selected = $this->selected_val( 'restaurant', $ci_categorie );
+            echo "<option value='restaurant' $selected >Restaurant</option>";
+
+            $selected = $this->selected_val( 'boulangerie', $ci_categorie );
+            echo "<option value='boulangerie' $selected >Boulangerie</option>";
+            
+            echo "</select>";
+            echo "</li>";
         }
         echo "</ul>";
 
@@ -151,6 +194,18 @@ class LocalisationRENDER
         echo "<button type='button' id='ajouter_ci'>Ajouter</button>";
         echo "<input type='hidden' name='cis_nb' id='cis_nb' value='${i}'>";
 
+    }
+
+    private function selected_val( $nom, $value )
+    {
+        $selected = '';
+
+        if( $nom == $value )
+        {
+            $selected = "selected='selected'";
+        }
+
+        return $selected;
     }
 
 }

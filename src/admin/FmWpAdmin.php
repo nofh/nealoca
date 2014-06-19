@@ -33,6 +33,7 @@ class FmWpAdmin
 	public function enqueue_admin_scripts() 
 	{
 		wp_enqueue_script( 'js-admin', plugins_url( 'assets/js/admin.js', __FILE__ ), array(), VERSION );
+		wp_enqueue_script( 'js-admin-villages', plugins_url( 'assets/js/villages.js', __FILE__ ), array(), VERSION );
 		wp_enqueue_script( 'js-admin-centres_interets', plugins_url( 'assets/js/centres_interets.js', __FILE__ ), array(), VERSION );
     }
 

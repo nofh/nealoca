@@ -231,46 +231,43 @@ class CustomPostTypeApi
         
         // acces
         $this->acces = get_post_meta( $this->ID, PREFIX_META . 'acces', true );
-        $this->label_acces = __( "acces", TEXT_DOMAIN );
+        $this->label_acces = get_post_meta( $this->ID, PREFIX_META . 'label_acces', true );
 
         $this->coord_arrivee =  get_post_meta( $this->ID, PREFIX_META . 'coord_arrivee', true );
         $this->label_arrivee =  get_post_meta( $this->ID, PREFIX_META . 'nom_arrivee', true );
+        $this->adr_arrivee =  get_post_meta( $this->ID, PREFIX_META . 'adr_arrivee', true );
 
         $this->coord_depart_un =  get_post_meta( $this->ID, PREFIX_META . 'coord_depart_un', true );
         $this->label_depart_un =  get_post_meta( $this->ID, PREFIX_META . 'nom_depart_un', true );
+        $this->adr_depart_un =  get_post_meta( $this->ID, PREFIX_META . 'adr_depart_un', true );
 
         $this->coord_depart_deux =  get_post_meta( $this->ID, PREFIX_META . 'coord_depart_deux', true );
         $this->label_depart_deux =  get_post_meta( $this->ID, PREFIX_META . 'nom_depart_deux', true );
+        $this->adr_depart_deux =  get_post_meta( $this->ID, PREFIX_META . 'adr_depart_deux', true );
 
         $this->coord_depart_trois =  get_post_meta( $this->ID, PREFIX_META . 'coord_depart_trois', true );
         $this->label_depart_trois =  get_post_meta( $this->ID, PREFIX_META . 'nom_depart_trois', true );
+        $this->adr_depart_trois =  get_post_meta( $this->ID, PREFIX_META . 'adr_depart_trois', true );
 
         $this->coord_depart_quatre =  get_post_meta( $this->ID, PREFIX_META . 'coord_depart_quatre', true );
         $this->label_depart_quatre =  get_post_meta( $this->ID, PREFIX_META . 'nom_depart_quatre', true );
+        $this->adr_depart_quatre =  get_post_meta( $this->ID, PREFIX_META . 'adr_depart_quatre', true );
 
         // region
         $this->region = get_post_meta( $this->ID, PREFIX_META . 'region', true );
         $this->label_region = __( "region", TEXT_DOMAIN );
 
         // villages
-        $this->villages = get_post_meta( $this->ID, PREFIX_META . 'villages', true );
-        $this->label_villages = __( "villages", TEXT_DOMAIN );
+        $this->nombre_villages = get_post_meta( $this->ID, PREFIX_META . 'villages_nb', true );
+        $this->formater_villages();
+
+        $this->texte_villages = get_post_meta( $this->ID, PREFIX_META . 'texte_village', true );
+        $this->label_texte_villages = __( 'Texte Village', TEXT_DOMAIN );
 
         // centres_interets
         $this->nombre_centres_interets = get_post_meta( $this->ID, PREFIX_META . 'cis_nb', true );
-        $this->centres_interets = array();
-        for( $i = 0; $i < $this->nombre_centres_interets; $i++ )
-        {
-            $nom_var_label = 'label_centre_interet_' . $i;
-            $nom_var_coord = 'coord_centre_interet_' . $i;
+        $this->formater_centres_interets();
 
-            $this->$nom_var_label = get_post_meta( $this->ID, PREFIX_META . 'ci_label_' . $i, true );
-            $this->$nom_var_coord = get_post_meta( $this->ID, PREFIX_META . 'ci_coord_' . $i, true );
-
-            // 
-            $this->centres_interets[$this->$nom_var_label] = $this->$nom_var_coord;
-        }
-        $this->label_centres_interets = __( "centres_interets", TEXT_DOMAIN );
     }
 
     public function init_appartement( $id, $post_type )
@@ -330,25 +327,24 @@ class CustomPostTypeApi
         $this->label_content = __( "Contenu principal", TEXT_DOMAIN );
     }
 
-    public function has_logo()
+    // has
+    public function has_centres_interets()
     {
         $ok = false;
 
-        if( isset( $this->logo ) && ! empty( $this->logo ) )
+        if( is_array( $this->centres_interets) )
         {
-            $ok = true;
+            if( count( $this->centres_interets ) > 0 ) 
+            {
+
+                $ok = true;
+            }
         }
 
         return $ok;
     }
 
-
-    public function is_etic()
-    {
-       // duplicate avec Utils est etic  
-        return has_term( Utils::get_nom_tag( ID_TAG_ETIC ), TAXO_TAG, $this->ID );
-    }
-
+    // explode
     private function explode_slider()
     {
         $this->slider = array();
@@ -371,66 +367,60 @@ class CustomPostTypeApi
         }
     }
 
-    /**
-     * transforme la chaine de reseaux sociaux ( issut de la db )
-     *
-     * cree des variables d'instance pour chaque reseaux ex $this->facebook ayant pour valeur le liens fb
-     * cree en mm temps un label $this->label_facebook -> facebook
-     * modifie $this->reseaux_sociaux pour en fair un tableau associatif array( 'facebook' => 'lien', 'twitter' => 'lien' );
-     * 
-     * @return none
-     */
-    private function explode_reseaux_sociaux()
+    // formater
+    public function formater_centres_interets()
     {
-        if( isset( $this->reseaux_sociaux ) && ! empty( $this->reseaux_sociaux ) )
+        $this->centres_interets = array();
+        $restaurant = array();
+        $boulangerie = array();
+
+        for( $i = 0; $i < $this->nombre_centres_interets; $i++ )
         {
-            $elements_resaux = explode( ';', $this->reseaux_sociaux );
+            $nom_var_label = 'label_centre_interet_' . $i;
+            $nom_var_coord = 'coord_centre_interet_' . $i;
+            $nom_var_categorie = 'categorie_centre_interet_' . $i;
 
-            //facebook,https://www.facebook.com/ConnexionCoworking;twitter,https://twitter.com/coworkingmons
-            //elements 
-            $tmp_reseaux_sociaux = array();
-            foreach( $elements_resaux as $element_resau )
+            $this->$nom_var_label = get_post_meta( $this->ID, PREFIX_META . 'ci_label_' . $i, true );
+            $this->$nom_var_coord = get_post_meta( $this->ID, PREFIX_META . 'ci_coord_' . $i, true );
+            $this->$nom_var_categorie = get_post_meta( $this->ID, PREFIX_META . 'ci_categorie_' . $i, true );
+
+            // creation du tab
+            switch( $this->$nom_var_categorie )
             {
-                $nom_et_lien = explode( ',', $element_resau );
-
-                $nom = ( array_key_exists( 0, $nom_et_lien ) ) ? $nom_et_lien[0] : '';
-                $lien = ( array_key_exists( 1, $nom_et_lien ) ) ? $nom_et_lien[1] : '';
-
-                $tmp_reseaux_sociaux[$nom] = $lien;
-
-                // aussi en variable du genre $this->facebook --> le lien 
-                $this->$nom = $lien;
-                $label = 'label_' . $nom;
-                $this->$label = $nom; // label du reseau ici on utiliser betement le mm nom ( issut de la db )
+            case "restaurant":
+                $restaurant[$this->$nom_var_label] = $this->$nom_var_coord;
+                break;
+            case "boulangerie":
+                $boulangerie[$this->$nom_var_label] = $this->$nom_var_coord;
+                break;
             }
-
-        // reformater reseaux
-        $this->reseaux_sociaux = $tmp_reseaux_sociaux;
-        }
-    }
-
-    public function formater_adresse() // TODO doit formater  adresse organsime
-    {
-        $adresse_formater = '';
-        $elements = explode( ';', $this->adresse_organisme );
-        for( $i = 0; $i < count( $elements ); $i++)
-        {
-            $sep = ' ';
-            if( $i == 2 )
-            {
-                $sep = '<br>';
-            }
-            else if( $i == 3 )
-            {
-                $sep = ' -- ';
-            }
-            $element = ( ! empty( $elements[$i] ) ) ? $elements[$i] : '';
-            $adresse_formater .= $element . $sep;
         }
 
-            return $adresse_formater;
+        $this->centres_interets['restaurant'] = $restaurant;
+        $this->centres_interets['boulangerie'] = $boulangerie;
+
+        $this->label_centres_interets = __( "centres_interets", TEXT_DOMAIN );
+
     }
 
+     public function formater_villages()
+    {
+        $this->villages = array();
+
+        for( $i = 0; $i < $this->nombre_villages; $i++ )
+        {
+            $nom_var_label = 'label_village_' . $i;
+            $nom_var_coord = 'coord_village_' . $i;
+
+            $this->$nom_var_label = get_post_meta( $this->ID, PREFIX_META . 'village_label_' . $i, true );
+            $this->$nom_var_coord = get_post_meta( $this->ID, PREFIX_META . 'village_coord_' . $i, true );
+
+            $this->villages[$this->$nom_var_label] = $this->$nom_var_coord;
+
+        }
+
+        $this->label_villages = __( "villages", TEXT_DOMAIN );
+    }
 
 }
 ?>

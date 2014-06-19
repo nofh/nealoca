@@ -48,6 +48,12 @@ class FmWpCommun
         $activite = new ActiviteCPT();
         $contact = new ContactCPT();
 
+        // ajax
+        $ajaxHandler = new AjaxHandler();
+        add_action( 'wp_ajax_executer_query', array( $ajaxHandler, 'executer_query_callback' ) ); // pour admin
+        add_action( 'wp_ajax_nopriv_executer_query', array( $ajaxHandler, 'executer_query_callback' ) ); // pour public 
+
+
 	}
  
     public static function get_instance() 

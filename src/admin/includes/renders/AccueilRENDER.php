@@ -1,6 +1,6 @@
 <?php 
 class AccueilRENDER
-{
+{//TODO mettre les controls ds les metabox
     private $post_type;
 
 

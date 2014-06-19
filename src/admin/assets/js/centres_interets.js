@@ -10,9 +10,14 @@ jQuery( function() {
         // index
         var index_ci_label = 'ci_label_' + cis_nb;
         var index_ci_coord = 'ci_coord_' + cis_nb;
+        var index_ci_categorie = 'ci_categorie_' + cis_nb;
 
         // html
-        var ci_label_coord_html = "<li><label for='"+index_ci_label+"'>Label :</label><input type='text' name='"+index_ci_label+"' id='"+index_ci_label+"' value=''><label for='"+index_ci_coord+"'>Coordonees :</label><input type='text' name='"+index_ci_coord+"' id='"+index_ci_coord+"' value=''></li>";
+        var select_box = "<select name='"+index_ci_categorie+"'>"
+                        + "<option value='restaurant'>Restaurant</option>"
+                        + "<option value='boulangerie'>Boulangerie</option>"
+                        + "</select>";
+        var ci_label_coord_html = "<li><label for='"+index_ci_label+"'>Label :</label><input type='text' name='"+index_ci_label+"' id='"+index_ci_label+"' value=''><label for='"+index_ci_coord+"'>Coordonees :</label><input type='text' name='"+index_ci_coord+"' id='"+index_ci_coord+"' value=''> "+ select_box +" </li>";
 
         // ajout du ci
         jQuery( '#liste_cis' ).append( ci_label_coord_html );

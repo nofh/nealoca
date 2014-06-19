@@ -32,9 +32,16 @@ class Db
         $this->debug();
     }
 
+    public function recuperer_localisations( $post_id )
+    {
+        $post_localisation = new CustomPostTypeApi( $post_id, Utils::get_slug_cpt( 'localisation' ) );
+
+        return $post_localisation;
+    }
+
     public function debug()
     {
         var_dump( $this->_db->last_query );
     }
-  }
+}
 ?>

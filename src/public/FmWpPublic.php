@@ -58,14 +58,19 @@ class FmWpPublic
 
 	public function enqueue_styles() 
 	{
-		wp_enqueue_style( 'css-public-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), VERSION );
+		wp_enqueue_style( 'css-public', plugins_url( 'assets/css/public.css', __FILE__ ), array(), VERSION );
 	}
 
 	public function enqueue_scripts() 
 	{
         // registre
-		wp_enqueue_style( 'js-public-styles', plugins_url( 'assets/css/public.js', __FILE__ ), array(), VERSION );
-
+		wp_enqueue_script( 'js-public', plugins_url( 'assets/js/public.js', __FILE__ ), array(), VERSION );
+        wp_enqueue_script( 'js-public-maps', 'https://maps.googleapis.com/maps/api/js?v=3.exy&sensor=false', array(), VERSION );
+        wp_enqueue_script( 'js-public-gmaps', plugins_url( 'assets/vendors/gmaps/gmaps.js', __FILE__ ), array(), VERSION );
+		wp_enqueue_script( 'js-public-localisation', plugins_url( 'assets/js/localisation.js', __FILE__ ), array('jquery'), VERSION );
         // localize
+
+        // localize ( passe une valeur a un script deja registre, ->nomScript, nomVariable, Valeur )
+        wp_localize_script( 'js-public-localisation', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 	}
 }
