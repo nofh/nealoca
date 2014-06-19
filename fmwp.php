@@ -26,6 +26,7 @@
 require_once plugin_dir_path( __FILE__ ) . 'src/config.php';
 require_once plugin_dir_path( __FILE__ ) . 'src/commun/FmWpCommun.php';
 require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/Db.php';
+require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/AjaxHandler.php';
 require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/Utils.php';
 //cpts
 require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/cpts/ApiCustomPostType.php';
