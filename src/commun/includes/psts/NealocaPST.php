@@ -34,9 +34,17 @@ class NealocaPST extends Posteur
         $config_post_contact = array( 'post_title' => 'Contact', 'page_template' => 'contact.php' );
         $this->creer_page( $config_post_contact );
 
+        // menu standar
         $elements_menu = array( 'Localisation', 'Appartements', 'Activités', 'Contact'  );
         $config_menu = array( 'menu_name' => 'nealoca_menu', 'localisation_menu' => 'top-bar-r', 'elements_menu' => $elements_menu );
         $this->creer_menu( $config_menu );
+
+        // menu mobile
+        $elements_menu = array( 'Localisation', 'Appartements', 'Activités', 'Contact'  );
+        $config_menu = array( 'menu_name' => 'nealoca_menu', 'localisation_menu' => 'mobile-off-canvas', 'elements_menu' => $elements_menu ); // pour la localisation voir naviagtion.php du theme
+        $this->creer_menu( $config_menu );
+
+
 
         // choix d'un frong page
         $this->activer_front_page( 'Accueil' );

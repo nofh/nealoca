@@ -15,6 +15,8 @@ class AppartementSAVE extends CustomPostTypeSave
 
     public function save_commodites( $post_id )
     {
+        //print_r( $_POST );
+
         $commodites_nb = sanitize_text_field( $_POST['commodites_nb'] );
         $commodites_nb = intval( $commodites_nb );
 
@@ -25,27 +27,30 @@ class AppartementSAVE extends CustomPostTypeSave
             $index_quantite_commodite = 'commodite_quantite_' . $i;
 
             // recuperation 
-            $valeur_label_commodite = sanitize_text_field( $_POST[$index_label_commodite] );
-            $valeur_quantite_commodite = sanitize_text_field( $_POST[$index_quantite_commodite] );
-
-            // securiter
-            if( ! empty( $valeur_label_commodite ) && ! empty( $valeur_quantite_commodite ) )
+            if( array_key_exists( $index_label_commodite, $_POST ) && array_key_exists( $index_quantite_commodite, $_POST ) )
             {
-                // save
-                update_post_meta( $post_id, PREFIX_META . $index_label_commodite, $valeur_label_commodite );
-                update_post_meta( $post_id, PREFIX_META . $index_quantite_commodite, $valeur_quantite_commodite );
-            }
-            else
-            {
-                // supprimer 
-                delete_post_meta( $post_id, PREFIX_META . $index_label_commodite, $valeur_label_commodite );
-                delete_post_meta( $post_id, PREFIX_META . $index_quantite_commodite, $valeur_quantite_commodite );
+                $valeur_label_commodite = sanitize_text_field( $_POST[$index_label_commodite] );
+                $valeur_quantite_commodite = sanitize_text_field( $_POST[$index_quantite_commodite] );
 
-                // mise a jour
-                $commodites_nb = ( $commodites_nb <= 0 ) ? 0 : $commodites_nb-1;
-            }
+                // securiter
+                if( ! empty( $valeur_label_commodite ) && ! empty( $valeur_quantite_commodite ) )
+                {
+                    // save
+                    update_post_meta( $post_id, PREFIX_META . $index_label_commodite, $valeur_label_commodite );
+                    update_post_meta( $post_id, PREFIX_META . $index_quantite_commodite, $valeur_quantite_commodite );
+                }
+                else
+                {
+                    // supprimer 
+                    delete_post_meta( $post_id, PREFIX_META . $index_label_commodite, $valeur_label_commodite );
+                    delete_post_meta( $post_id, PREFIX_META . $index_quantite_commodite, $valeur_quantite_commodite );
 
-            update_post_meta( $post_id, PREFIX_META . 'commodites_nb', $commodites_nb );
+                    // mise a jour
+                    $commodites_nb = ( $commodites_nb <= 0 ) ? 0 : $commodites_nb-1;
+                }
+
+                update_post_meta( $post_id, PREFIX_META . 'commodites_nb', $commodites_nb );
+            }
         }
     }
 
@@ -55,34 +60,25 @@ class AppartementSAVE extends CustomPostTypeSave
         $gallerie_string = '';
 
         // recueprer les urls des images en attachement ( fct std de wp )
-        $hrefs = array();
+        $urls = array();
         $html = str_get_html( $_POST['valeur_gallerie_appartement'] );
         if( is_object( $html ) )
         {
             $liens = $html->find( 'a' );
             foreach( $liens as $element ) 
             {
-                 $hrefs[] =  str_replace( '\"', '', $element->href ) ;
-            }
+                 $url =  str_replace( '\"', '', $element->href );
+                 $urls[] = Utils::get_attachement_id_by_url( $url );
 
-            // creation du gallerie 
-            $gallerie = array();
-            $images = get_children( "post_parent=$post_id&post_type=attachment&post_mime_type=image" );
-            foreach( $images as $image )
-            {
-                // ds le gallerie on ne met que les attachement ds le post mais aussi ds la meta box gallerie 
-                if( in_array( $image->guid, $hrefs ) )
-                {
-                    $gallerie[] = $image->ID;
-                }
             }
 
             // preparation pour la save en db
-            $gallerie_string = implode( ';', $gallerie );
+            $urls_string = implode( ';', $urls );
+
+            // save en db 
+            update_post_meta( $post_id, PREFIX_META . 'gallerie_appartement', $urls_string );
         }
 
-        // save en db 
-		update_post_meta( $post_id, PREFIX_META . 'gallerie_appartement', $gallerie_string );
     }
 
 }

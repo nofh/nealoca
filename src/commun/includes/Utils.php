@@ -39,7 +39,10 @@ class Utils
 
      public static function get_attachement_id_by_url( $url )
      {
-         
+         $db = Db::get_instance();
+         $attachment_id = $db->recuperer_attachement_id( $url );
+
+        return $attachment_id;
      }
 }
 ?>

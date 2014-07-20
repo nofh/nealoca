@@ -39,6 +39,13 @@ class Db
         return $post_localisation;
     }
 
+    public function recuperer_attachement_id( $url )
+    {
+        $attachment_id = $this->_db->get_var( $this->_db->prepare( "SELECT ID FROM {$this->_db->prefix}posts WHERE guid RLIKE %s;", $url ) );
+
+        return $attachment_id;
+    }
+
     public function debug()
     {
         var_dump( $this->_db->last_query );

@@ -37,7 +37,7 @@ class AccueilSAVE extends CustomPostTypeSave
 		update_post_meta( $post_id, PREFIX_META . 'slogan', $valeur_slogan );
     }
 
-    public function save_slider( $post_id )
+    public function save_slider( $post_id ) //REVOIR slider et gallerie -> ex appartement mais double?!
     {
         // recuprer le content 
         $slider_string = '';

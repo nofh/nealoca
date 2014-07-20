@@ -284,6 +284,10 @@ class CustomPostTypeApi
         $this->content =  get_post_field( 'post_content', $this->ID );
         $this->label_content = __( "Contenu principal", TEXT_DOMAIN );
 
+        // nom appartement
+        $this->nom = get_the_title( $this->ID );
+        $this->label_nom = __( 'Nom Appartement', TEXT_DOMAIN );
+
         // description
         $this->description = get_post_meta( $this->ID, PREFIX_META . 'description', true );
         $this->label_description = __( "description", TEXT_DOMAIN );
@@ -314,6 +318,61 @@ class CustomPostTypeApi
 
         $this->content =  get_post_field( 'post_content', $this->ID );
         $this->label_content = __( "Contenu principal", TEXT_DOMAIN );
+
+        $this->nom = get_post_field( 'post_title', $this->ID );
+        $this->label_nom = __( 'nom', TEXT_DOMAIN );
+
+        $this->description = get_post_meta( $this->ID, PREFIX_META . 'description', true );
+        $this->label_description = __( 'Description', TEXT_DOMAIN );
+
+        $this->adresse_rue = get_post_meta( $this->ID, PREFIX_META . 'adresse_rue', true );
+        $this->label_adresse_rue = __( 'adresse_rue', TEXT_DOMAIN );
+
+        $this->adresse_numero = get_post_meta( $this->ID, PREFIX_META . 'adresse_numero', true );
+        $this->label_adresse_numero = __( 'adresse_numero', TEXT_DOMAIN );
+
+        $this->adresse_boite = get_post_meta( $this->ID, PREFIX_META . 'adresse_boite', true );
+        $this->label_adresse_boite = __( 'adresse_boite', TEXT_DOMAIN );
+
+        $this->adresse_ville = get_post_meta( $this->ID, PREFIX_META . 'adresse_ville', true );
+        $this->label_adresse_ville = __( 'adresse_ville', TEXT_DOMAIN );
+
+        $this->adresse_pays = get_post_meta( $this->ID, PREFIX_META . 'adresse_pays', true );
+        $this->label_adresse_pays = __( 'adresse_pays', TEXT_DOMAIN );
+
+        $this->heures = get_post_meta( $this->ID, PREFIX_META . 'heures', true );
+        $this->label_heures = __( 'heures', TEXT_DOMAIN );
+
+        $this->jours = get_post_meta( $this->ID, PREFIX_META . 'jours', true );
+        $this->label_jours = __( 'jours', TEXT_DOMAIN );
+
+        $this->nom_contact = get_post_meta( $this->ID, PREFIX_META . 'nom_contact', true );
+        $this->label_nom_contact = __( 'nom_contact', TEXT_DOMAIN );
+
+        $this->tel_contact = get_post_meta( $this->ID, PREFIX_META . 'tel_contact', true );
+        $this->label_tel_contact = __( 'tel_contact', TEXT_DOMAIN );
+
+        $this->email_contact = get_post_meta( $this->ID, PREFIX_META . 'email_contact', true );
+        $this->label_email_contact = __( 'email_contact', TEXT_DOMAIN );
+
+        $this->site_web_contact = get_post_meta( $this->ID, PREFIX_META . 'site_web_contact', true );
+        $this->label_site_web_contact = __( 'site_web_contact', TEXT_DOMAIN );
+
+        $this->explode_gallerie();
+        $this->label_photos = __( "photos", TEXT_DOMAIN );
+
+        // html
+        $adresse = $this->adresse_rue . ' ' . $this->adresse_numero . ' '. $this->adresse_numero . $this->adresse_boite . ', ' . $this->adresse_ville;
+        $this->adresse_html =  $adresse;
+        $this->label_adresse = __( 'Adresse', TEXT_DOMAIN );
+
+        $horaires = $this->jours . ' ' . $this->heures;
+        $this->horaires_html = $horaires;
+        $this->label_horaires = __( 'Horaires', TEXT_DOMAIN );
+
+        $contact = $this->nom_contact . ' ' . $this->tel_contact . ' ' . $this->email_contact . ' ' . $this->site_web_contact ;
+        $this->contact_html = $contact;
+        $this->label_contact = __( 'Contact', TEXT_DOMAIN );
     }
 
     public function init_contact( $id, $post_type )
@@ -327,8 +386,29 @@ class CustomPostTypeApi
         $this->permalink = get_permalink( $this->ID );
         $this->label_permalink = __( 'Permalink', TEXT_DOMAIN );
 
-        $this->content =  get_post_field( 'post_content', $this->ID );
+        $this->content = get_post_field( 'post_content', $this->ID );
         $this->label_content = __( "Contenu principal", TEXT_DOMAIN );
+
+        $this->description = get_post_meta( $this->ID, PREFIX_META . 'description', true );
+        $this->label_description = __( 'description', TEXT_DOMAIN );
+
+
+        $this->heures = get_post_meta( $this->ID, PREFIX_META . 'heures', true );
+        $this->label_heures = __( 'heures', TEXT_DOMAIN );
+
+        $this->jours = get_post_meta( $this->ID, PREFIX_META . 'jours', true );
+        $this->label_jours = __( 'jours', TEXT_DOMAIN );
+
+        $this->nom_contact = get_post_meta( $this->ID, PREFIX_META . 'nom_contact', true );
+        $this->label_nom_contact = __( 'nom_contact', TEXT_DOMAIN );
+
+        $this->tel_contact = get_post_meta( $this->ID, PREFIX_META . 'tel_contact', true );
+        $this->label_tel_contact = __( 'tel_contact', TEXT_DOMAIN );
+
+        $this->email_contact = get_post_meta( $this->ID, PREFIX_META . 'email_contact', true );
+        $this->label_email_contact = __( 'email_contact', TEXT_DOMAIN );
+
+
     }
 
     // is
@@ -433,6 +513,9 @@ class CustomPostTypeApi
             break;
         case Utils::get_slug_cpt( 'appartement' ):
             $nom_champ = 'gallerie_appartement';
+            break;
+        case Utils::get_slug_cpt( 'activite' ):
+            $nom_champ = 'gallerie_activite';
             break;
         }
 

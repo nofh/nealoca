@@ -59,6 +59,7 @@ class FmWpPublic
 	public function enqueue_styles() 
 	{
 		wp_enqueue_style( 'css-public', plugins_url( 'assets/css/public.css', __FILE__ ), array(), VERSION );
+		wp_enqueue_style( 'css-public-fontawesome', "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", false, VERSION );
 	}
 
 	public function enqueue_scripts() 
@@ -71,6 +72,6 @@ class FmWpPublic
         // localize
 
         // localize ( passe une valeur a un script deja registre, ->nomScript, nomVariable, Valeur )
-        wp_localize_script( 'js-public-localisation', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
-	}
+            wp_localize_script( 'js-public-localisation', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
+    }
 }

@@ -53,6 +53,9 @@ add_action( 'plugins_loaded', array( 'FmWpCommun', 'get_instance' ) );
 require_once plugin_dir_path( __FILE__ ) . 'src/public/FmWpPublic.php';
 require_once plugin_dir_path( __FILE__ ) . 'src/public/includes/ShortCode.php';
 require_once plugin_dir_path( __FILE__ ) . 'src/public/includes/TestSHC.php';
+// vendor
+//require_once plugin_dir_path( __FILE__ ) . 'src/public/assets/vendors/cool-php-captcha/captcha.php';
+
 
 // instancie le front
 add_action( 'plugins_loaded', array( 'FmWpPublic', 'get_instance' ) );

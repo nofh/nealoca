@@ -29,7 +29,7 @@ class AppartementRENDER
         wp_nonce_field( 'description_box', 'description_nonce' );
         $content = get_post_meta( $post->ID, PREFIX_META . 'description', true );
 
-        $settings = array( 'media_buttons' => false );
+        $settings = array( 'media_buttons' => false, 'textarea_rows' => 8 );
         wp_editor( $content, 'valeur_description', $settings );
     }
 
