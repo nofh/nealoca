@@ -12,8 +12,8 @@
  * @wordpress-plugin
  * Plugin Name:       NeaLoca 
  * Plugin URI:        @TODO
- * Description:       Micro FrameWork
- * Version:           0.0.1
+ * Description:       Location d'appartements
+ * Version:           1.0.0
  * Author:            dendev
  * Text Domain:       fmwp_lang
  * Git Plugin URI:    https://github.com/nofh/fmwp.git

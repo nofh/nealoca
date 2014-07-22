@@ -53,6 +53,8 @@ class FmWpCommun
         add_action( 'wp_ajax_executer_query', array( $ajaxHandler, 'executer_query_callback' ) ); // pour admin
         add_action( 'wp_ajax_nopriv_executer_query', array( $ajaxHandler, 'executer_query_callback' ) ); // pour public 
 
+        //$posteur = new NealocaPST( 'creation' );
+
 
 	}
  
@@ -120,4 +122,4 @@ class FmWpCommun
         // localize
 	}
 }
-
+?>

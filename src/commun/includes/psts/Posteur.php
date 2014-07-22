@@ -7,7 +7,8 @@ class Posteur
 
     public function creer_post( $config )
     {
-
+        global $wpdb;
+	    return $wpdb->get_row("SELECT ID FROM wp_posts WHERE post_title = '" . $title_str . "' && post_status = 'publish' && post_type = 'page' && post_parent=17", 'ARRAY_N');
         $this->_creation_du_post( $config );
     }
 
@@ -58,16 +59,26 @@ class Posteur
     // --
     private function _creation_du_post( $config )
     {
-        $post_a_creer = array(
-            'post_content'   => $this->_get_post_option_config( $config, 'post_content' ),
-            'post_title'     => $this->_get_post_option_config( $config, 'post_title' ),
-            'post_status'    => $this->_get_post_option_config( $config, 'post_status' ),
-            'post_type'      => $this->_get_post_option_config( $config, 'post_type' ),
-            'post_author'    => $this->_get_post_option_config( $config, 'post_author' ),
-            'page_template'  => $this->_get_post_option_config( $config, 'page_template' ),
-        );
+        $ok = false;
 
-        $ok = wp_insert_post( $post_a_creer );
+        if( ! $this->_post_ou_page_existe_by_title( $this->_get_post_option_config( $config, 'post_title' ), $this->_get_post_option_config( $config, 'post_type' ) ) )
+        {
+            //echo " CREATION";
+            $post_id = $post_a_creer = array(
+                'post_content'   => $this->_get_post_option_config( $config, 'post_content' ),
+                'post_title'     => $this->_get_post_option_config( $config, 'post_title' ),
+                'post_status'    => $this->_get_post_option_config( $config, 'post_status' ),
+                'post_type'      => $this->_get_post_option_config( $config, 'post_type' ),
+                'post_author'    => $this->_get_post_option_config( $config, 'post_author' ),
+                'page_template'  => $this->_get_post_option_config( $config, 'page_template' ),
+            );
+
+            //echo " insert ";
+            //print_r( $post_a_creer );
+            $ok = wp_insert_post( $post_a_creer );
+            //echo " resulta ";
+            //print_r( $ok );
+        }
 
         return $ok;
     }
@@ -187,6 +198,10 @@ class Posteur
                     ) );
             }
         }
+        else
+        {
+            $menu_id = $menu_exists->term_id;
+        }
 
         // active le menu ds le theme
         $locations = get_theme_mod('nav_menu_locations');
@@ -240,16 +255,37 @@ class Posteur
 
         return $ok;
     }
+    // existe 
+    private function _post_ou_page_existe_by_title( $post_title, $post_type )
+    {
+        global $wpdb;
+
+        $existe = false; 
+
+        if( $post_type != 'page' && $post_type != 'post' )
+        {
+            $post_type = 'post';
+        }
+
+        $existe = $wpdb->get_row("SELECT ID FROM wp_posts WHERE post_title = '{$post_title}' && post_status = 'publish' && post_type = '${post_type}' ", 'ARRAY_N');
+        //print_r( $existe );
+        //echo " $post_title existe ?";
+
+        return $existe;
+    }
 
     // suppression
     private function _suppression_du_post( $config )
     {
         $this->_get_post_option_config( $config, 'post_title' );
-        $post = get_page_by_title( $this->_get_post_option_config( $config, 'post_title' ) );
-        if( is_object( $post ) )
+        do
         {
-            wp_delete_post( $post->ID, true );
-        }
+            $post = get_page_by_title( $this->_get_post_option_config( $config, 'post_title' ) );
+            if( is_object( $post ) )
+            {
+                wp_delete_post( $post->ID, true );
+            }
+        }while( property_exists( $post, 'ID' ) );
     }
 
     public function _suppression_du_menu( $config )

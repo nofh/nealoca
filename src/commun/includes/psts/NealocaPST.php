@@ -52,6 +52,9 @@ class NealocaPST extends Posteur
 
     public function _suppression()
     {
+        $config_post_accueil = array( 'post_title' => 'Accueil' );
+        $this->supprimer_page( $config_post_accueil );
+
         $config_post_localisation = array( 'post_title' => 'Localisation' );
         $this->supprimer_page( $config_post_localisation );
 
