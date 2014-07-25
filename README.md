@@ -29,6 +29,9 @@ Mise à jour: 25/07/2014
 
 # Liens
 [code](https://github.com/nofh/nealoca)
+
 docs -> url + nom site/plugins/fwmp/docs
+
 [bugs](https://github.com/nofh/nealoca/issues)
+
 [wiki](https://github.com/nofh/nealoca/wiki)
