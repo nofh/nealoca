@@ -76,6 +76,8 @@ class FmWpCommun
         ob_start();
 
         $posteur = new NealocaPST( 'creation' );
+        Loggeur::init();
+        Loggeur::init_dev();
 
         flush_rewrite_rules();//permlink activer sans refresh
 

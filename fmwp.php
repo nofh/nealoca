@@ -39,6 +39,8 @@ require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/cpts/ContactCPT.
 //posteur
 require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/psts/Posteur.php'; 
 require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/psts/NealocaPST.php'; 
+//Loggeur
+require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/Loggeur.php'; 
 
 //activation et desactivation
 register_activation_hook( __FILE__, array( 'FmWpCommun', 'activate' ) );
