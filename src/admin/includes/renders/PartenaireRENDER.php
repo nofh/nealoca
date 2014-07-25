@@ -1,5 +1,5 @@
 <?php 
-class ActiviteRENDER
+class PartenaireRENDER
 {
     private $post_type;
 
@@ -9,7 +9,7 @@ class ActiviteRENDER
         $this->post_type = $post_type;
 
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
-        add_action( 'save_post', array( new ActiviteSAVE(), 'save' ) );
+        add_action( 'save_post', array( new PartenaireSAVE(), 'save' ) );
 	}
 
     public function add_meta_box( $post_type ) 

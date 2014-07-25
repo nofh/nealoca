@@ -1,5 +1,5 @@
 <?php 
-class AppartementRENDER
+class AppartRENDER
 {
     private $post_type;
 
@@ -9,7 +9,7 @@ class AppartementRENDER
         $this->post_type = $post_type;
 
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
-        add_action( 'save_post', array( new AppartementSAVE(), 'save' ) );
+        add_action( 'save_post', array( new AppartSAVE(), 'save' ) );
 	}
 
     public function add_meta_box( $post_type ) 

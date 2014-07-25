@@ -1,5 +1,5 @@
 <?php 
-class AppartementSAVE extends CustomPostTypeSave
+class AppartSAVE extends CustomPostTypeSave
 {
     public function __construct()
     {

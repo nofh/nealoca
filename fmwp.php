@@ -33,8 +33,8 @@ require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/cpts/ApiCustomPo
 require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/cpts/CustomPostType.php';
 require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/cpts/AccueilCPT.php'; 
 require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/cpts/LocalisationCPT.php'; 
-require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/cpts/AppartementCPT.php'; 
-require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/cpts/ActiviteCPT.php'; 
+require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/cpts/AppartCPT.php'; 
+require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/cpts/PartenaireCPT.php'; 
 require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/cpts/ContactCPT.php'; 
 //posteur
 require_once plugin_dir_path( __FILE__ ) . 'src/commun/includes/psts/Posteur.php'; 
@@ -70,15 +70,15 @@ if( is_admin() )
 	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/renders/AdminRENDER.php';
 	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/renders/AccueilRENDER.php';
 	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/renders/LocalisationRENDER.php';
-	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/renders/AppartementRENDER.php';
-	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/renders/ActiviteRENDER.php';
+	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/renders/AppartRENDER.php';
+	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/renders/PartenaireRENDER.php';
 	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/renders/ContactRENDER.php';
     // saves
 	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/saves/CustomPostTypeSave.php';
 	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/saves/AccueilSAVE.php';
 	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/saves/LocalisationSAVE.php';
-	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/saves/AppartementSAVE.php';
-	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/saves/ActiviteSAVE.php';
+	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/saves/AppartSAVE.php';
+	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/saves/PartenaireSAVE.php';
 	include_once plugin_dir_path( __FILE__ ) . 'src/admin/includes/saves/ContactSAVE.php';
     // vendors
 	include_once plugin_dir_path( __FILE__ ) . 'src/admin/assets/vendors/simple_html_dom.php';

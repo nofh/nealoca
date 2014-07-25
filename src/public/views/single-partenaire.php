@@ -11,12 +11,12 @@ get_header(); ?>
 
 	<div id="primary" class="site-content">
 		<div id="content" role="main">
-            <h1> DEBUG CPT APPARTEMENT </h1>
+            <h1> DEBUG CPT PARTENAIRE</h1>
             <?php while ( have_posts() ) : the_post(); ?> 
-                <?php if( is_cpt_appartement( $post->ID ) ) : global $post_appartement; ?>
-                    <!-- Cpt appartement -->
+                <?php if( is_cpt_partenaire( $post->ID ) ) : global $post_partenaire; ?>
+                    <!-- Cpt partenaire -->
                     <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-<?php print_r( $post_appartement ) ?> 
+<?php print_r( $post_partenaire ) ?> 
                     </article><!-- #post -->
                 <?php endif; ?>
 

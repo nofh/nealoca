@@ -65,9 +65,9 @@ class AccueilRENDER
 
     public function slider_render( $post )
     {
-        wp_nonce_field( 'slider', 'slider_nonce' );
+        wp_nonce_field( 'slider_accueil', 'slider_nonce' );
 
-        $slider_string = get_post_meta( $post->ID, PREFIX_META . 'slider', true );
+        $slider_string = get_post_meta( $post->ID, PREFIX_META . 'slider_accueil', true );
         $slider = explode( ';', $slider_string );
 
         // recuperation des images 
@@ -79,7 +79,7 @@ class AccueilRENDER
         }
 
         $settings = array( 'media_buttons' => true, 'textarea_rows' => 12 );
-        wp_editor( $content, 'valeur_slider', $settings );
+        wp_editor( $content, 'valeur_slider_accueil', $settings );
     }
 
     public function gallerie_accueil_render( $post )

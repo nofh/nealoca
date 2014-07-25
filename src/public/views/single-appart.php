@@ -11,12 +11,14 @@ get_header(); ?>
 
 	<div id="primary" class="site-content">
 		<div id="content" role="main">
-            <h1> DEBUG CPT ACTIVITE </h1>
+            <h1> DEBUG CPT APPART </h1>
             <?php while ( have_posts() ) : the_post(); ?> 
-                <?php if( is_cpt_activite( $post->ID ) ) : global $post_activite; ?>
-                    <!-- Cpt activite -->
+                <?php if( is_cpt_appart( $post->ID ) ) : global $post_appart; ?>
+                    <!-- Cpt appart -->
                     <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-<?php print_r( $post_activite ) ?> 
+                        <pre>
+                        <?php print_r( $post_appart ) ?> 
+                        </pre>
                     </article><!-- #post -->
                 <?php endif; ?>
 
@@ -27,7 +29,6 @@ get_header(); ?>
 					<span class="nav-next"><?php next_post_link( '%link', '%title <span class="meta-nav">' . _x( '&rarr;', 'Next post link', 'twentytwelve' ) . '</span>' ); ?></span>
 				</nav><!-- .nav-single -->
 
-				<?php comments_template( '', true ); ?>
 
 			<?php endwhile; // end of the loop. ?>
 

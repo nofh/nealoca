@@ -39,77 +39,54 @@ class AccueilSAVE extends CustomPostTypeSave
 
     public function save_slider( $post_id ) //REVOIR slider et gallerie -> ex appartement mais double?!
     {
-        // recuprer le content 
-        $slider_string = '';
+       // recuprer le content 
+        $gallerie_string = '';
 
         // recueprer les urls des images en attachement ( fct std de wp )
-        $hrefs = array();
-        $html = str_get_html( $_POST['valeur_slider'] );
+        $urls = array();
+        $html = str_get_html( $_POST['valeur_slider_accueil'] );
         if( is_object( $html ) )
         {
             $liens = $html->find( 'a' );
             foreach( $liens as $element ) 
             {
-                 $hrefs[] =  str_replace( '\"', '', $element->href ) ;
-            }
-         //   print_r( $hrefs );
+                 $url =  str_replace( '\"', '', $element->href );
+                 $urls[] = Utils::get_attachement_id_by_url( $url );
 
-            // creation du slider 
-            $slider = array();
-            $images = get_children( "post_parent=$post_id&post_type=attachment&post_mime_type=image" );
-            foreach( $images as $image )
-            {
-           //     echo $image->guid;
-                // ds le slider on ne met que les attachement ds le post mais aussi ds la meta box slider 
-                if( in_array( $image->guid, $hrefs ) )
-                {
-                    $slider[] = $image->ID;
-                }
             }
 
             // preparation pour la save en db
-            $slider_string = implode( ';', $slider );
-           // print_r( $slider_string );
+            $urls_string = implode( ';', $urls );
         }
 
         // save en db 
-		update_post_meta( $post_id, PREFIX_META . 'slider', $slider_string );
+        update_post_meta( $post_id, PREFIX_META . 'slider_accueil', $urls_string );
     }
 
     public function save_gallerie_accueil( $post_id )
     {
-        // recuprer le content 
+       // recuprer le content 
         $gallerie_string = '';
 
         // recueprer les urls des images en attachement ( fct std de wp )
-        $hrefs = array();
+        $urls = array();
         $html = str_get_html( $_POST['valeur_gallerie_accueil'] );
         if( is_object( $html ) )
         {
             $liens = $html->find( 'a' );
             foreach( $liens as $element ) 
             {
-                 $hrefs[] =  str_replace( '\"', '', $element->href ) ;
-            }
+                 $url =  str_replace( '\"', '', $element->href );
+                 $urls[] = Utils::get_attachement_id_by_url( $url );
 
-            // creation du gallerie 
-            $gallerie = array();
-            $images = get_children( "post_parent=$post_id&post_type=attachment&post_mime_type=image" );
-            foreach( $images as $image )
-            {
-                // ds le gallerie on ne met que les attachement ds le post mais aussi ds la meta box gallerie 
-                if( in_array( $image->guid, $hrefs ) )
-                {
-                    $gallerie[] = $image->ID;
-                }
             }
 
             // preparation pour la save en db
-            $gallerie_string = implode( ';', $gallerie );
+            $urls_string = implode( ';', $urls );
         }
 
         // save en db 
-		update_post_meta( $post_id, PREFIX_META . 'gallerie_accueil', $gallerie_string );
+        update_post_meta( $post_id, PREFIX_META . 'gallerie_accueil', $urls_string );
     }
 
     public function save_disponibilite( $post_id )

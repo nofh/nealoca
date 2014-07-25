@@ -44,8 +44,8 @@ class FmWpCommun
         // custom post type 
         $accueil = new AccueilCPT();
         $localisation = new LocalisationCPT();
-        $appartement = new AppartementCPT();
-        $activite = new ActiviteCPT();
+        $appartement = new AppartCPT();
+        $activite = new PartenaireCPT();
         $contact = new ContactCPT();
 
         // ajax

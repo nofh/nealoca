@@ -18,14 +18,14 @@ function is_cpt_localisation( $post = null )
     return is_cpt( 'localisation', $post );
 }
 
-function is_cpt_appartement( $post = null )
+function is_cpt_appart( $post = null )
 {
-    return is_cpt( 'appartement', $post );
+    return is_cpt( 'appart', $post );
 }
 
-function is_cpt_activite( $post = null )
+function is_cpt_partenaire( $post = null )
 {
-    return is_cpt( 'activite', $post );
+    return is_cpt( 'partenaire', $post );
 }
 
 function is_cpt_contact( $post = null )
@@ -167,11 +167,11 @@ class CustomPostTypeApi
         case Utils::get_slug_cpt( 'localisation' ):
             $this->init_localisation( $id, $post_type );
             break;
-        case Utils::get_slug_cpt( 'appartement' ):
-            $this->init_appartement( $id, $post_type );
+        case Utils::get_slug_cpt( 'appart' ):
+            $this->init_appart( $id, $post_type );
             break;
-        case Utils::get_slug_cpt( 'activite' ):
-            $this->init_activite( $id, $post_type );
+        case Utils::get_slug_cpt( 'partenaire' ):
+            $this->init_partenaire( $id, $post_type );
             break;
         case Utils::get_slug_cpt( 'contact' ):
             $this->init_contact( $id, $post_type );
@@ -270,7 +270,7 @@ class CustomPostTypeApi
 
     }
 
-    public function init_appartement( $id, $post_type )
+    public function init_appart( $id, $post_type )
     {
         $this->ID = $id;
         $this->label_id = __( 'ID: ', TEXT_DOMAIN );
@@ -305,7 +305,7 @@ class CustomPostTypeApi
         $this->label_disponibilite = __( 'Disponibilité', TEXT_DOMAIN );
     }
 
-    public function init_activite( $id, $post_type )
+    public function init_partenaire( $id, $post_type )
     {
         $this->ID = $id;
         $this->label_id = __( 'ID: ', TEXT_DOMAIN );
@@ -494,7 +494,7 @@ class CustomPostTypeApi
     private function explode_slider()
     {
         $this->slider = array();
-        $slider = get_post_meta( $this->ID, PREFIX_META . 'slider', true );
+        $slider = get_post_meta( $this->ID, PREFIX_META . 'slider_accueil', true );
 
         if( $slider )
         {
@@ -511,10 +511,10 @@ class CustomPostTypeApi
         case Utils::get_slug_cpt( 'accueil' ):
             $nom_champ = 'gallerie_accueil';
             break;
-        case Utils::get_slug_cpt( 'appartement' ):
+        case Utils::get_slug_cpt( 'appart' ):
             $nom_champ = 'gallerie_appartement';
             break;
-        case Utils::get_slug_cpt( 'activite' ):
+        case Utils::get_slug_cpt( 'partenaire' ):
             $nom_champ = 'gallerie_activite';
             break;
         }
